@@ -26,6 +26,27 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Install dependencies (miniapp)
+        working-directory: ./miniapp
+        run: npm install
+
+      - name: Build H5
+        working-directory: ./miniapp
+        env:
+          # 从 GitHub Secrets 读取环境变量，或者使用空值
+          TARO_APP_SUPABASE_URL: ${{ secrets.TARO_APP_SUPABASE_URL }}
+          TARO_APP_SUPABASE_ANON_KEY: ${{ secrets.TARO_APP_SUPABASE_ANON_KEY }}
+          TARO_APP_AMAP_KEY: ${{ secrets.TARO_APP_AMAP_KEY }}
+          TARO_APP_AMAP_WEB_KEY: ${{ secrets.TARO_APP_AMAP_WEB_KEY }}
+          TARO_APP_AMAP_JS_KEY: ${{ secrets.TARO_APP_AMAP_JS_KEY }}
+          TARO_APP_AMAP_SECURITY_KEY: ${{ secrets.TARO_APP_AMAP_SECURITY_KEY }}
+        run: npm run build:h5
+
+      - name: Copy H5 to Capacitor www folder
+        run: |
+          rm -rf app/www
+          cp -r miniapp/dist/h5 app/www
+
       - name: Install dependencies (app)
         working-directory: ./app
         run: npm install
