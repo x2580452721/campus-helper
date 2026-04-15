@@ -251,8 +251,14 @@ export default function Verify() {
               placeholder='请输入真实姓名'
               maxlength={20}
               value={formData.name}
-              onInput={e => {
-                setFormData({ ...formData, name: e.detail.value })
+              onInput={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, name: val })
+                if (errors.name) setErrors(prev => ({ ...prev, name: '' }))
+              }}
+              onChange={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, name: val })
                 if (errors.name) setErrors(prev => ({ ...prev, name: '' }))
               }}
             />
@@ -267,8 +273,14 @@ export default function Verify() {
               placeholder='请输入学号（8-12位数字）'
               maxlength={12}
               value={formData.studentId}
-              onInput={e => {
-                setFormData({ ...formData, studentId: e.detail.value })
+              onInput={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, studentId: val })
+                if (errors.studentId) setErrors(prev => ({ ...prev, studentId: '' }))
+              }}
+              onChange={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, studentId: val })
                 if (errors.studentId) setErrors(prev => ({ ...prev, studentId: '' }))
               }}
               onBlur={handleStudentIdBlur}
@@ -284,8 +296,14 @@ export default function Verify() {
               placeholder='请输入所在学院'
               maxlength={30}
               value={formData.college}
-              onInput={e => {
-                setFormData({ ...formData, college: e.detail.value })
+              onInput={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, college: val })
+                if (errors.college) setErrors(prev => ({ ...prev, college: '' }))
+              }}
+              onChange={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, college: val })
                 if (errors.college) setErrors(prev => ({ ...prev, college: '' }))
               }}
             />
@@ -299,7 +317,14 @@ export default function Verify() {
               placeholder='请输入专业名称'
               maxlength={30}
               value={formData.major}
-              onInput={e => setFormData({ ...formData, major: e.detail.value })}
+              onInput={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, major: val })
+              }}
+              onChange={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                setFormData({ ...formData, major: val })
+              }}
             />
           </View>
         </View>

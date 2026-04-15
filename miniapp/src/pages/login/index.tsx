@@ -476,7 +476,16 @@ export default function Login() {
               type='text'
               placeholder='请输入邮箱地址或测试手机号'
               value={formData.email}
-              onInput={e => setFormData({ ...formData, email: e.detail.value })}
+              onInput={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                console.log('[login] 输入邮箱/手机号:', val)
+                setFormData({ ...formData, email: val })
+              }}
+              onChange={(e) => {
+                const val = e.detail?.value ?? e.target?.value ?? ''
+                console.log('[login] 邮箱/手机号变化:', val)
+                setFormData({ ...formData, email: val })
+              }}
             />
           </View>
 
@@ -507,7 +516,15 @@ export default function Login() {
                   placeholder='请输入验证码'
                   maxlength={6}
                   value={formData.code}
-                  onInput={e => setFormData({ ...formData, code: e.detail.value })}
+                  onInput={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    console.log('[login] 输入验证码:', val)
+                    setFormData({ ...formData, code: val })
+                  }}
+                  onChange={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, code: val })
+                  }}
                 />
                 <Button
                   className='code-btn'
@@ -529,7 +546,14 @@ export default function Login() {
                 password
                 placeholder='请输入密码'
                 value={formData.password}
-                onInput={e => setFormData({ ...formData, password: e.detail.value })}
+                onInput={(e) => {
+                  const val = e.detail?.value ?? e.target?.value ?? ''
+                  setFormData({ ...formData, password: val })
+                }}
+                onChange={(e) => {
+                  const val = e.detail?.value ?? e.target?.value ?? ''
+                  setFormData({ ...formData, password: val })
+                }}
               />
             </View>
           )}
@@ -543,7 +567,14 @@ export default function Login() {
                   placeholder='请输入昵称'
                   maxlength={20}
                   value={formData.nickname}
-                  onInput={e => setFormData({ ...formData, nickname: e.detail.value })}
+                  onInput={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, nickname: val })
+                  }}
+                  onChange={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, nickname: val })
+                  }}
                 />
               </View>
               <View className='form-item'>
@@ -554,7 +585,14 @@ export default function Login() {
                   password
                   placeholder='请设置密码（至少6位）'
                   value={formData.password}
-                  onInput={e => setFormData({ ...formData, password: e.detail.value })}
+                  onInput={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, password: val })
+                  }}
+                  onChange={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, password: val })
+                  }}
                 />
               </View>
               <View className='form-item'>
@@ -565,7 +603,14 @@ export default function Login() {
                   password
                   placeholder='请再次输入密码'
                   value={formData.confirmPassword}
-                  onInput={e => setFormData({ ...formData, confirmPassword: e.detail.value })}
+                  onInput={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, confirmPassword: val })
+                  }}
+                  onChange={(e) => {
+                    const val = e.detail?.value ?? e.target?.value ?? ''
+                    setFormData({ ...formData, confirmPassword: val })
+                  }}
                 />
               </View>
             </>
