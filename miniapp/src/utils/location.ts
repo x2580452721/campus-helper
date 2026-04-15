@@ -4,7 +4,7 @@ import { normalizeCoordinate, type NormalizedCoordinate } from './mapData'
 export interface ResolvedLocation extends NormalizedCoordinate {
   name: string
   address: string
-  source: 'weapp' | 'browser' | 'capacitor' | 'stored' | 'default'
+  source: 'weapp' | 'browser' | 'capacitor' | 'capacitor-plugin' | 'stored' | 'default'
 }
 
 export const DEFAULT_CAMPUS_LOCATION: ResolvedLocation = {
@@ -170,6 +170,51 @@ function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocati
   })
 }
 
+async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<ResolvedLocation | null> {
+  try {
+    const Capacitor = (window as any).Capacitor
+    if (!Capacitor?.Plugins?.Geolocation) {
+      console.warn('[location] Capacitor Geolocation 插件不可用')
+      return null
+    }
+
+    const Geolocation = Capacitor.Plugins.Geolocation
+    
+    const position = await Geolocation.getCurrentPosition({
+      enableHighAccuracy: isHighAccuracy,
+      timeout: isHighAccuracy ? 15000 : 8000,
+      maximumAge: 30000
+    })
+
+    if (!position?.coords) {
+      console.warn('[location] Capacitor 定位返回无效结果')
+      return null
+    }
+
+    let lat = position.coords.latitude
+    let lng = position.coords.longitude
+    
+    const converted = wgs84ToGcj02(lng, lat)
+    
+    const location = normalizeResolvedLocation({
+      latitude: converted.lat,
+      longitude: converted.lng,
+      name: '当前位置',
+      address: '当前位置'
+    }, 'capacitor-plugin')
+    
+    if (location) {
+      saveLastKnownLocation(location)
+    }
+    
+    console.log('[location] Capacitor 插件定位成功:', location)
+    return location
+  } catch (error) {
+    console.warn('[location] Capacitor 插件定位失败:', error)
+    return null
+  }
+}
+
 function isCapacitorEnv(): boolean {
   return typeof window !== 'undefined' && 
          !!(window as any).Capacitor ||
@@ -177,9 +222,17 @@ function isCapacitorEnv(): boolean {
          document.querySelector('script[src*="capacitor"]') !== null
 }
 
+function hasCapacitorGeolocationPlugin(): boolean {
+  const Capacitor = (window as any).Capacitor
+  return !!(Capacitor?.Plugins?.Geolocation)
+}
+
 export async function getCurrentLocationWithFallback(): Promise<ResolvedLocation | null> {
   const env = Taro.getEnv()
   const isCapacitor = isCapacitorEnv()
+  const hasPlugin = hasCapacitorGeolocationPlugin()
+
+  console.log('[location] 环境检测:', { env, isCapacitor, hasPlugin })
 
   if (env === 'WEAPP') {
     try {
@@ -196,6 +249,22 @@ export async function getCurrentLocationWithFallback(): Promise<ResolvedLocation
 
     const lowAccuracy = await requestWeappLocation(false)
     if (lowAccuracy) return lowAccuracy
+  } else if (isCapacitor && hasPlugin) {
+    const pluginHighAccuracy = await requestCapacitorPluginLocation(true)
+    if (pluginHighAccuracy) return pluginHighAccuracy
+
+    const pluginLowAccuracy = await requestCapacitorPluginLocation(false)
+    if (pluginLowAccuracy) return pluginLowAccuracy
+
+    const browserHighAccuracy = await requestBrowserLocation(true)
+    if (browserHighAccuracy) {
+      return { ...browserHighAccuracy, source: 'capacitor' }
+    }
+
+    const browserLowAccuracy = await requestBrowserLocation(false)
+    if (browserLowAccuracy) {
+      return { ...browserLowAccuracy, source: 'capacitor' }
+    }
   } else {
     const source = isCapacitor ? 'capacitor' : 'browser'
     const browserHighAccuracy = await requestBrowserLocation(true)
