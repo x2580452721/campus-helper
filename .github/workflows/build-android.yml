@@ -71,3 +71,38 @@ jobs:
         with:
           name: app-debug
           path: app/android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Create Release and Upload APK
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        with:
+          files: app/android/app/build/outputs/apk/debug/app-debug.apk
+          tag_name: v1.0.0-${{ steps.date.outputs.date }}
+          name: Campus Helper APK v1.0.0 (${{ steps.date.outputs.date }})
+          body: |
+            ## Campus Helper Android App
+            
+            这是自动构建的 Debug APK，可以直接安装使用。
+            
+            ### 功能特性：
+            - ✅ 校园互助任务发布和接单
+            - ✅ 高德地图定位和导航
+            - ✅ 用户认证和信用体系
+            - ✅ 任务评价系统
+            
+            ### 测试账号：
+            - 手机号：13800138000 ~ 13800138009
+            - 验证码：123456
+            
+            ### 注意事项：
+            - 这是 Debug 版本，仅供测试使用
+            - 需要网络连接才能使用
+            - 部分功能可能需要 VPN（Supabase 在国外）
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
