@@ -9,6 +9,7 @@
 *   **[部署指南 (Deployment)](.trae/documents/DEPLOYMENT.md)**: **必读！** 环境搭建与发布教程。
 *   **[用户手册 (User Manual)](.trae/documents/USER_MANUAL.md)**: 管理员与用户操作说明。
 *   **[测试账号文档](docs/test-accounts.md)**: 开发测试用的账号和数据。
+*   **[2026-04-15 开发日志](CHANGELOG_20260415.md)**: 今日完成的工作记录。
 
 ## ✨ 核心特性
 
@@ -38,12 +39,16 @@ cd ../admin && npm install
     cd admin
     npm run dev
     ```
+*   **Android App 打包**:
+    - 详细说明请查看 [app/README.md](./app/README.md)
+    - 或使用 GitHub Actions 自动构建（详见 [app/GITHUB_ACTIONS_GUIDE.md](./app/GITHUB_ACTIONS_GUIDE.md)）
 
 ## 🛠️ 技术栈
 
 *   **前端**: Taro, React, TypeScript, NutUI, Ant Design
+*   **移动端**: Capacitor (Android App 打包)
 *   **后端**: Supabase (PostgreSQL, Auth, RLS)
-*   **工具**: Vite, PostCSS
+*   **工具**: Vite, PostCSS, GitHub Actions
 
 ---
 Created with ❤️ by Trae AI
