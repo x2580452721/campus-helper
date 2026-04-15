@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/static/amap-h5.html",
+      "destination": "/index.html"
+    }
+  ]
+}

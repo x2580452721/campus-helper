@@ -1,0 +1,43 @@
+{
+  "name": "campus-helper-miniapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Campus Helper MiniApp",
+  "templateInfo": {
+    "name": "react",
+    "typescript": true,
+    "css": "sass"
+  },
+  "scripts": {
+    "build:weapp": "node scripts/run-taro.js build --type weapp",
+    "build:h5": "node scripts/run-taro.js build --type h5",
+    "dev:weapp": "node scripts/run-taro.js build --type weapp --watch",
+    "dev:h5": "node scripts/run-taro.js build --type h5 --watch"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "@tarojs/components": "3.6.23",
+    "@tarojs/helper": "3.6.23",
+    "@tarojs/plugin-framework-react": "3.6.23",
+    "@tarojs/react": "3.6.23",
+    "@tarojs/runtime": "3.6.23",
+    "@tarojs/shared": "3.6.23",
+    "@tarojs/taro": "3.6.23",
+    "@tarojs/webpack5-runner": "3.6.23",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
+    "@tarojs/cli": "3.6.23",
+    "@tarojs/plugin-platform-h5": "3.6.23",
+    "@tarojs/plugin-platform-weapp": "3.6.23",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.0",
+    "babel-preset-taro": "3.6.23",
+    "sharp": "^0.34.5",
+    "typescript": "^5.0.0"
+  }
+}

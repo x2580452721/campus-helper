@@ -1,0 +1,56 @@
+{
+  "miniprogramRoot": "./dist/weapp/",
+  "projectname": "campus-helper-miniapp",
+  "description": "Campus Helper MiniApp",
+  "appid": "wxd338367e26dacfcc",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReUpdate": false,
+    "lazyloadPlaceholderEnable": false,
+    "useMultiFrameRuntime": true,
+    "showES6CompileOption": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": [
+      "typescript",
+      "less"
+    ],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "disableRemoteNetworkScript": false,
+    "minifyWXML": true,
+    "condition": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}
