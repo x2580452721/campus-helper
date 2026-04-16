@@ -496,9 +496,13 @@
     right: 0;
     bottom: 0;
     background: #f0f9ff;
-    z-index: 1000;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
 
     .map-header {
         display: flex;
@@ -591,9 +595,11 @@
     }
 
     .map-wrapper {
-        flex: 1;
+        flex: 1 1 auto;
         position: relative;
         overflow: hidden;
+        min-height: 0;
+        max-height: calc(100vh - 300px);
     }
 
     .map-bottom-bar {
@@ -604,7 +610,10 @@
         background: rgba(255, 255, 255, 0.98);
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
         position: relative;
-        z-index: 10;
+        z-index: 100;
+        flex-shrink: 0;
+        flex-grow: 0;
+        max-height: 300px;
 
         .selected-location-info {
             display: flex;

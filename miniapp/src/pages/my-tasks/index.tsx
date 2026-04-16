@@ -86,7 +86,7 @@ export default function MyTasks() {
             setTasks([])
             return
         }
-        
+
         setLoading(true)
 
         try {
@@ -144,10 +144,10 @@ export default function MyTasks() {
                 const taskIds = data.map(t => t.id)
                 if (taskIds.length > 0) {
                     const [reviewsResult, taskAcceptancesResult] = await Promise.all([
-                        request<Array<{ task_id: string; reviewer_id: string; reviewee_id: string }>>('/rest/v1/reviews', {
+                        request<Array<{ id: string; task_id: string; reviewer_id: string; reviewee_id: string; rating: number; comment?: string; created_at: string }>>('/rest/v1/reviews', {
                             method: 'GET',
                             data: {
-                                select: 'task_id,reviewer_id,reviewee_id',
+                                select: 'id,task_id,reviewer_id,reviewee_id,rating,comment,created_at',
                                 task_id: buildInFilter(taskIds)
                             }
                         }),
@@ -171,6 +171,12 @@ export default function MyTasks() {
                         acceptancesMap.set(ta.task_id, ta.acceptor_id)
                     })
 
+                    const reviewsMap = new Map()
+                    reviewsData.forEach(review => {
+                        console.log('[my-tasks] review data:', review)
+                        reviewsMap.set(review.task_id, review)
+                    })
+
                     data = data.map(task => {
                         let targetRevieweeId: string | null = null
                         const acceptorId = acceptancesMap.get(task.id) || null
@@ -181,13 +187,16 @@ export default function MyTasks() {
                             targetRevieweeId = task.publisher_id || null
                         }
 
-                        const hasReviewed = reviewsData?.some(r => 
-                            r.task_id === task.id && 
-                            r.reviewer_id === user.id && 
+                        const hasReviewed = reviewsData?.some(r =>
+                            r.task_id === task.id &&
+                            r.reviewer_id === user.id &&
                             r.reviewee_id === targetRevieweeId
                         )
 
-                        return { ...task, hasReviewed }
+                        const review = reviewsMap.get(task.id)
+                        console.log('[my-tasks] task:', task.id, 'review:', review)
+
+                        return { ...task, hasReviewed, review }
                     })
                 }
             }
@@ -213,7 +222,7 @@ export default function MyTasks() {
 
     const getFilteredTasks = () => {
         if (activeTab !== 'history') return tasks
-        
+
         switch (historySubTab) {
             case 'reviewed':
                 return tasks.filter(t => t.hasReviewed)
@@ -231,9 +240,9 @@ export default function MyTasks() {
         if (historySubTab === 'unreviewed') {
             return { isReviewed: false, text: '去评价' }
         }
-        return { 
-            isReviewed: !!task.hasReviewed, 
-            text: task.hasReviewed ? '追加评价' : '去评价' 
+        return {
+            isReviewed: !!task.hasReviewed,
+            text: task.hasReviewed ? '追加评价' : '去评价'
         }
     }
 
@@ -361,10 +370,27 @@ export default function MyTasks() {
                                     <Text className='time'>{new Date(task.created_at).toLocaleDateString()}</Text>
                                     <Text className='reward'>¥{task.reward}</Text>
                                 </View>
+                                {task.review && (
+                                    <View className='task-review'>
+                                        <View className='review-stars'>
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <Text
+                                                    key={star}
+                                                    className={`review-star ${star <= task.review.rating ? 'active' : ''}`}
+                                                >
+                                                    ★
+                                                </Text>
+                                            ))}
+                                        </View>
+                                        {task.review.comment && (
+                                            <Text className='review-comment'>{task.review.comment}</Text>
+                                        )}
+                                    </View>
+                                )}
                             </View>
                             {activeTab === 'published' && task.status === 'published' && (
                                 <View className='task-actions'>
-                                    <View 
+                                    <View
                                         className='action-btn edit'
                                         onClick={(e) => {
                                             e.stopPropagation()
@@ -373,7 +399,7 @@ export default function MyTasks() {
                                     >
                                         <Text className='action-icon'>✏️</Text>
                                     </View>
-                                    <View 
+                                    <View
                                         className='action-btn cancel'
                                         onClick={(e) => {
                                             e.stopPropagation()
@@ -390,7 +416,7 @@ export default function MyTasks() {
                                         {user && task.publisher_id === user.id ? '我发布的' : '我接受的'}
                                     </Text>
                                     {task.status === 'completed' && (
-                                        <View 
+                                        <View
                                             className={`review-btn-small ${getReviewButtonState(task).isReviewed ? 'reviewed' : ''}`}
                                             onClick={(e) => handleReviewClick(e, task)}
                                         >

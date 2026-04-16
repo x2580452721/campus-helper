@@ -525,8 +525,8 @@ export default function PublishTask() {
                         </View>
                     )}
 
-                            <View className='map-wrapper'>
-                                {!isWeapp && (
+                    <View className='map-wrapper'>
+                        {!isWeapp && (
                             <AmapView
                                 initialLocation={sanitizedPickerLocation || undefined}
                                 mode='select'

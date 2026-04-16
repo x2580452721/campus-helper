@@ -65,6 +65,7 @@ export default function TaskDetail() {
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null)
   const [distance, setDistance] = useState<number | null>(null)
   const [showNavigationPicker, setShowNavigationPicker] = useState(false)
+  const [showFullMap, setShowFullMap] = useState(false)
   const [reviews, setReviews] = useState<Review[]>([])
   const [currentUserHasReviewed, setCurrentUserHasReviewed] = useState(false)
   const [locationHint, setLocationHint] = useState<string | null>(null)
@@ -461,7 +462,7 @@ export default function TaskDetail() {
 
   const handleNavigate = () => {
     if (!task) return
-    setShowNavigationPicker(true)
+    setShowFullMap(true)
   }
 
   const handleCancel = async () => {
@@ -517,6 +518,7 @@ export default function TaskDetail() {
   }
 
   const renderStars = (rating: number) => {
+    console.log('[renderStars] rating:', rating)
     return (
       <View className='stars-small'>
         {[1, 2, 3, 4, 5].map((star) => (
@@ -852,136 +854,48 @@ export default function TaskDetail() {
         )}
       </View>
 
-      {showNavigationPicker && task && (
-        <View className='navigation-picker-overlay' onClick={() => setShowNavigationPicker(false)}>
-          <View className='navigation-picker' onClick={(e) => e.stopPropagation()}>
-            <View className='nav-picker-header'>
-              <View className='nav-picker-indicator' />
-              <Text className='nav-picker-title'>选择导航方式</Text>
-            </View>
-
-            <View className='nav-picker-content'>
-              <View className='nav-destination'>
-                <Text className='nav-dest-label'>目的地</Text>
-                <Text className='nav-dest-name'>{task.location.name}</Text>
-                <Text className='nav-dest-address'>{task.location.address || task.location.name}</Text>
+      {showFullMap && task && (
+        <View className='full-map-overlay'>
+          <View className='full-map-container'>
+            <View className='full-map-header'>
+              <View className='back-btn' onClick={() => setShowFullMap(false)}>
+                <Text className='back-icon'>←</Text>
+                <Text className='back-text'>返回</Text>
               </View>
-
-              <View className='nav-options'>
-                <View
-                  className='nav-option'
-                  onClick={() => {
-                    const env = Taro.getEnv()
-                    if (env === 'WEAPP') {
-                      Taro.openLocation({
-                        latitude: task.location.latitude,
-                        longitude: task.location.longitude,
-                        name: task.location.name,
-                        address: task.location.address,
-                        scale: 18
-                      })
-                    } else {
-                      const url = `https://uri.amap.com/navigation?to=${task.location.longitude},${task.location.latitude},${encodeURIComponent(task.location.name)}&mode=walk&policy=1&src=campus-helper&coordinate=gaode`
-                      window.open(url, '_blank')
-                    }
-                    setShowNavigationPicker(false)
-                  }}
-                >
-                  <View className='nav-icon amap'>🗺️</View>
-                  <View className='nav-info'>
-                    <Text className='nav-name'>高德地图</Text>
-                    <Text className='nav-desc'>推荐 · 步行导航</Text>
-                  </View>
-                  <Text className='nav-arrow'>→</Text>
-                </View>
-
-                <View
-                  className='nav-option'
-                  onClick={() => {
-                    const env = Taro.getEnv()
-                    if (env === 'WEAPP') {
-                      Taro.openLocation({
-                        latitude: task.location.latitude,
-                        longitude: task.location.longitude,
-                        name: task.location.name,
-                        address: task.location.address,
-                        scale: 18
-                      })
-                    } else {
-                      const url = `https://map.baidu.com/marker?location=${task.location.latitude},${task.location.longitude}&title=${encodeURIComponent(task.location.name)}&content=${encodeURIComponent(task.location.address || '')}&output=html`
-                      window.open(url, '_blank')
-                    }
-                    setShowNavigationPicker(false)
-                  }}
-                >
-                  <View className='nav-icon baidu'>📍</View>
-                  <View className='nav-info'>
-                    <Text className='nav-name'>百度地图</Text>
-                    <Text className='nav-desc'>智能路线规划</Text>
-                  </View>
-                  <Text className='nav-arrow'>→</Text>
-                </View>
-
-                <View
-                  className='nav-option'
-                  onClick={() => {
-                    const env = Taro.getEnv()
-                    if (env === 'WEAPP') {
-                      Taro.openLocation({
-                        latitude: task.location.latitude,
-                        longitude: task.location.longitude,
-                        name: task.location.name,
-                        address: task.location.address,
-                        scale: 18
-                      })
-                    } else {
-                      const url = `https://apis.map.qq.com/uri/v1/marker?marker=coord:${task.location.latitude},${task.location.longitude};title:${encodeURIComponent(task.location.name)};addr:${encodeURIComponent(task.location.address || '')}&referer=campus-helper`
-                      window.open(url, '_blank')
-                    }
-                    setShowNavigationPicker(false)
-                  }}
-                >
-                  <View className='nav-icon tencent'>🌐</View>
-                  <View className='nav-info'>
-                    <Text className='nav-name'>腾讯地图</Text>
-                    <Text className='nav-desc'>精准定位</Text>
-                  </View>
-                  <Text className='nav-arrow'>→</Text>
-                </View>
-
-                {currentLocation && (
-                  <View
-                    className='nav-option'
-                    onClick={() => {
-                      const env = Taro.getEnv()
-                      if (env === 'WEAPP') {
-                        Taro.openLocation({
-                          latitude: task.location.latitude,
-                          longitude: task.location.longitude,
-                          name: task.location.name,
-                          address: task.location.address,
-                          scale: 18
-                        })
-                      } else {
-                        const url = `https://www.google.com/maps/dir/${currentLocation.latitude},${currentLocation.longitude}/${task.location.latitude},${task.location.longitude}`
-                        window.open(url, '_blank')
-                      }
-                      setShowNavigationPicker(false)
-                    }}
-                  >
-                    <View className='nav-icon google'>🌍</View>
-                    <View className='nav-info'>
-                      <Text className='nav-name'>Google Maps</Text>
-                      <Text className='nav-desc'>国际通用</Text>
-                    </View>
-                    <Text className='nav-arrow'>→</Text>
-                  </View>
-                )}
-              </View>
+              <Text className='header-title'>导航到任务地点</Text>
+              <View style={{ width: '120px' }} />
             </View>
-
-            <View className='nav-picker-cancel' onClick={() => setShowNavigationPicker(false)}>
-              <Text className='nav-cancel-text'>取消</Text>
+            <View className='full-map-wrapper'>
+              {!isWeapp ? (
+                <AmapView
+                  initialLocation={currentLocation || DEFAULT_CAMPUS_LOCATION}
+                  markers={miniMapMarker}
+                  selectedMarkerId={task.id}
+                  mode='view'
+                  showRoute
+                />
+              ) : (
+                <WebviewAmapView
+                  userLocation={currentLocation || DEFAULT_CAMPUS_LOCATION}
+                  tasks={miniMapMarker}
+                  selectedTaskId={task.id}
+                  mode='view'
+                  showRoute
+                  onNavigate={() => { }}
+                  onOpenTaskDetail={() => { }}
+                  onLocate={getCurrentLocation}
+                />
+              )}
+            </View>
+            <View className='full-map-footer'>
+              <View className='location-info'>
+                <Text className='loc-label'>目的地</Text>
+                <Text className='loc-name'>{task.location.name}</Text>
+                <Text className='loc-address'>{task.location.address || task.location.name}</Text>
+              </View>
+              <Button className='close-map-btn' onClick={() => setShowFullMap(false)}>
+                关闭地图
+              </Button>
             </View>
           </View>
         </View>

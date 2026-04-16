@@ -262,6 +262,42 @@
                         font-weight: 700;
                     }
                 }
+
+                .task-review {
+                    margin-top: 16px;
+                    padding: 16px;
+                    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                    border-radius: 16px;
+
+                    .review-stars {
+                        display: flex;
+                        gap: 4px;
+                        margin-bottom: 8px;
+
+                        .review-star {
+                            font-size: 28px;
+                            color: #cbd5e1;
+                            transition: all 0.2s ease;
+
+                            &.active {
+                                color: #f59e0b;
+                                text-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+                            }
+                        }
+                    }
+
+                    .review-comment {
+                        font-size: 24px;
+                        color: #475569;
+                        line-height: 1.6;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        word-break: break-word;
+                        white-space: pre-wrap;
+                        display: block;
+                        width: 100%;
+                    }
+                }
             }
 
             .task-actions {

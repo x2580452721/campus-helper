@@ -134,17 +134,31 @@ function requestWeappLocation(isHighAccuracy: boolean): Promise<ResolvedLocation
 
 function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocation | null> {
   return new Promise((resolve) => {
+    console.log('[location] 尝试浏览器定位, 高精度:', isHighAccuracy)
+    
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      console.warn('[location] 浏览器不支持 geolocation')
       resolve(null)
       return
     }
 
+    const timeout = isHighAccuracy ? 10000 : 6000
+    
+    const timeoutId = setTimeout(() => {
+      console.warn('[location] 浏览器定位超时')
+      resolve(null)
+    }, timeout + 500)
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        clearTimeout(timeoutId)
+        console.log('[location] 浏览器定位成功, 原始坐标:', position.coords)
+        
         let lat = position.coords.latitude
         let lng = position.coords.longitude
         
         const converted = wgs84ToGcj02(lng, lat)
+        console.log('[location] 转换后坐标:', converted)
         
         const location = normalizeResolvedLocation({
           latitude: converted.lat,
@@ -158,13 +172,15 @@ function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocati
         resolve(location)
       },
       (error) => {
+        clearTimeout(timeoutId)
         console.warn('[location] 浏览器定位失败:', error)
+        console.warn('[location] 错误代码:', error.code, '错误信息:', error.message)
         resolve(null)
       },
       {
         enableHighAccuracy: isHighAccuracy,
-        timeout: isHighAccuracy ? 15000 : 8000,
-        maximumAge: 30000
+        timeout: timeout,
+        maximumAge: isHighAccuracy ? 0 : 60000
       }
     )
   })
