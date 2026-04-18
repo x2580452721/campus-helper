@@ -43,10 +43,12 @@ python sync_docs_simple.py
 | docs/03-技术文档/DEPLOYMENT.md | DEPLOYMENT.md |
 | docs/04-用户文档/USER_MANUAL.md | USER_MANUAL.md |
 | docs/05-测试文档/test_plan.md | test_plan.md |
+| docs/01-项目管理/DOCS_SYNC_GUIDE.md | DOCS_SYNC_GUIDE.md |
+| docs/03-技术文档/APP_LOCATION_GUIDE.md | APP_LOCATION_GUIDE.md |
 
 ## 重要说明
 
-⚠️ **请不要直接修改 .trae/documents/ 下的文件！**
+⚠️ **请不要直接修改 .trae/documents/ 下的文件！
 - 你的修改可能会在下一次同步时被覆盖
 - 请只修改 docs/ 下的文档，然后运行同步脚本
 

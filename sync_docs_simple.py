@@ -9,10 +9,12 @@ DOCS = [
     ("docs/01-项目管理/requirements_and_bugs.md", ".trae/documents/requirements_and_bugs.md"),
     ("docs/01-项目管理/project_roadmap.md", ".trae/documents/project_roadmap.md"),
     ("docs/01-项目管理/meeting_minutes_20260414.md", ".trae/documents/meeting_minutes_20260414.md"),
+    ("docs/01-项目管理/DOCS_SYNC_GUIDE.md", ".trae/documents/DOCS_SYNC_GUIDE.md"),
     ("docs/02-产品文档/campus_helper_prd.md", ".trae/documents/campus_helper_prd.md"),
     ("docs/02-产品文档/campus_helper_srs.md", ".trae/documents/campus_helper_srs.md"),
     ("docs/03-技术文档/campus_helper_technical_architecture.md", ".trae/documents/campus_helper_technical_architecture.md"),
     ("docs/03-技术文档/DEPLOYMENT.md", ".trae/documents/DEPLOYMENT.md"),
+    ("docs/03-技术文档/APP_LOCATION_GUIDE.md", ".trae/documents/APP_LOCATION_GUIDE.md"),
     ("docs/04-用户文档/USER_MANUAL.md", ".trae/documents/USER_MANUAL.md"),
     ("docs/05-测试文档/test_plan.md", ".trae/documents/test_plan.md"),
 ]

@@ -4,12 +4,32 @@
 
 ## 📚 文档导航
 
-*   **[产品需求文档 (PRD)](.trae/documents/campus_helper_prd.md)**: 详细的功能定义与业务流程。
-*   **[技术架构文档](.trae/documents/campus_helper_technical_architecture.md)**: 系统架构设计与技术选型。
-*   **[部署指南 (Deployment)](.trae/documents/DEPLOYMENT.md)**: **必读！** 环境搭建与发布教程。
-*   **[用户手册 (User Manual)](.trae/documents/USER_MANUAL.md)**: 管理员与用户操作说明。
-*   **[测试账号文档](docs/test-accounts.md)**: 开发测试用的账号和数据。
-*   **[2026-04-15 开发日志](CHANGELOG_20260415.md)**: 今日完成的工作记录。
+### 项目管理
+*   **[需求与Bug跟踪](docs/01-项目管理/requirements_and_bugs.md)**
+*   **[项目路线图](docs/01-项目管理/project_roadmap.md)**
+*   **[项目开发历程](docs/01-项目管理/项目开发历程.md)**
+*   **[会议记录 2026-04-14](docs/01-项目管理/meeting_minutes_20260414.md)**
+*   **[文档同步指南](docs/01-项目管理/DOCS_SYNC_GUIDE.md)**
+
+### 产品文档
+*   **[产品需求文档 (PRD)](docs/02-产品文档/campus_helper_prd.md)**
+*   **[软件需求规格 (SRS)](docs/02-产品文档/campus_helper_srs.md)**
+*   **[产品介绍](docs/02-产品文档/产品介绍.md)**
+*   **[项目架构说明](docs/02-产品文档/项目架构说明.md)**
+
+### 技术文档
+*   **[快速开始 (QUICKSTART)](docs/03-技术文档/QUICKSTART.md)**
+*   **[部署指南 (DEPLOYMENT)](docs/03-技术文档/DEPLOYMENT.md)** - **必读！**
+*   **[Supabase 设置指南](docs/03-技术文档/SUPABASE_SETUP_GUIDE.md)**
+*   **[技术架构文档](docs/03-技术文档/campus_helper_technical_architecture.md)**
+*   **[App 定位配置指南](docs/03-技术文档/APP_LOCATION_GUIDE.md)**
+
+### 用户文档
+*   **[用户手册 (USER MANUAL)](docs/04-用户文档/USER_MANUAL.md)**
+*   **[测试账号文档](docs/04-用户文档/test-accounts.md)**
+
+### 测试文档
+*   **[测试计划](docs/05-测试文档/test_plan.md)**
 
 ## ✨ 核心特性
 
@@ -23,9 +43,7 @@
 
 ### 1. 初始化依赖
 ```bash
-npm install
 cd miniapp && npm install
-cd ../admin && npm install
 ```
 
 ### 2. 启动服务
@@ -34,14 +52,32 @@ cd ../admin && npm install
     cd miniapp
     npm run dev:h5
     ```
-*   **管理后台**:
-    ```bash
-    cd admin
-    npm run dev
-    ```
 *   **Android App 打包**:
     - 详细说明请查看 [app/README.md](./app/README.md)
     - 或使用 GitHub Actions 自动构建（详见 [app/GITHUB_ACTIONS_GUIDE.md](./app/GITHUB_ACTIONS_GUIDE.md)）
+    - 定位配置详见 [docs/03-技术文档/APP_LOCATION_GUIDE.md](docs/03-技术文档/APP_LOCATION_GUIDE.md)
+
+## 📁 项目结构
+
+```
+Campus Helper/
+├── docs/                          # 📚 文档主目录
+│   ├── 01-项目管理/               # 项目管理文档
+│   ├── 02-产品文档/               # 产品相关文档
+│   ├── 03-技术文档/               # 技术实现文档
+│   ├── 04-用户文档/               # 用户使用说明
+│   └── 05-测试文档/               # 测试相关文档
+├── miniapp/                       # 📱 小程序前端
+├── app/                           # 📦 App 打包 (Capacitor)
+├── sync_docs_simple.py            # 🔄 文档同步脚本
+└── README.md                      # 👈 你在这里
+```
+
+## 📌 重要说明
+
+- **请只编辑 `docs/` 下的文档！**
+- 修改后运行 `python sync_docs_simple.py` 同步到 `.trae/documents/`
+- 详见 [文档同步指南](docs/01-项目管理/DOCS_SYNC_GUIDE.md)
 
 ## 🛠️ 技术栈
 

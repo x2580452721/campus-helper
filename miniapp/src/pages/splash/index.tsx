@@ -8,15 +8,15 @@ export default function Splash() {
   const [animationPhase, setAnimationPhase] = useState(0)
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setAnimationPhase(1), 100)
-    const timer2 = setTimeout(() => setAnimationPhase(2), 600)
-    const timer3 = setTimeout(() => setAnimationPhase(3), 1200)
+    const timer1 = setTimeout(() => setAnimationPhase(1), 300)
+    const timer2 = setTimeout(() => setAnimationPhase(2), 1200)
+    const timer3 = setTimeout(() => setAnimationPhase(3), 2200)
     const timer4 = setTimeout(() => {
       setIsVisible(false)
       setTimeout(() => {
         Taro.switchTab({ url: '/pages/index/index' })
-      }, 300)
-    }, 2200)
+      }, 500)
+    }, 4000)
 
     return () => {
       clearTimeout(timer1)
