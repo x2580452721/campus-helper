@@ -142,30 +142,25 @@ function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocati
       return
     }
 
-    // 手机端超时时间更长一点，让GPS有足够时间搜星
-    const timeout = isHighAccuracy ? 15000 : 10000
-
+    const timeout = isHighAccuracy ? 20000 : 12000
     const timeoutId = setTimeout(() => {
       console.warn('[location] 浏览器定位超时')
       resolve(null)
     }, timeout + 500)
 
-    // 优化的定位参数
     const options = {
       enableHighAccuracy: isHighAccuracy,
       timeout: timeout,
-      maximumAge: isHighAccuracy ? 0 : 120000, // 缓存2分钟
+      maximumAge: isHighAccuracy ? 0 : 120000,
     }
 
     console.log('[location] 使用定位参数:', options)
 
-    // 先尝试高精度定位
     navigator.geolocation.getCurrentPosition(
       (position) => {
         clearTimeout(timeoutId)
         console.log('[location] 浏览器定位成功, 原始坐标:', position.coords)
         console.log('[location] 精度:', position.coords.accuracy, '米')
-        console.log('[location] 定位来源:', position.coords)
 
         let lat = position.coords.latitude
         let lng = position.coords.longitude
@@ -189,8 +184,7 @@ function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocati
         console.warn('[location] 浏览器定位失败:', error)
         console.warn('[location] 错误代码:', error.code, '错误信息:', error.message)
 
-        // 如果是高精度失败，尝试用低精度重试一次
-        if (isHighAccuracy && error.code !== 1) { // 代码1是用户拒绝
+        if (isHighAccuracy && error.code !== 1) {
           console.log('[location] 高精度失败，尝试低精度定位')
           requestBrowserLocation(false).then(resolve)
           return
@@ -212,9 +206,11 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
 
     const Geolocation = Capacitor.Plugins.Geolocation
 
+    console.log(`[location] 尝试 Capacitor ${isHighAccuracy ? '高' : '低'}精度定位...`)
+
     const position = await Geolocation.getCurrentPosition({
       enableHighAccuracy: isHighAccuracy,
-      timeout: isHighAccuracy ? 15000 : 8000,
+      timeout: isHighAccuracy ? 20000 : 10000,
       maximumAge: 30000
     })
 
@@ -225,6 +221,9 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
 
     let lat = position.coords.latitude
     let lng = position.coords.longitude
+    const accuracy = position.coords.accuracy
+
+    console.log('[location] Capacitor 定位结果:', { lat, lng, accuracy })
 
     const converted = wgs84ToGcj02(lng, lat)
 
@@ -232,7 +231,7 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
       latitude: converted.lat,
       longitude: converted.lng,
       name: '当前位置',
-      address: '当前位置'
+      address: `当前位置 (精度: ${accuracy?.toFixed(0) || '~'}米)`
     }, 'capacitor-plugin')
 
     if (location) {
@@ -241,30 +240,79 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
 
     console.log('[location] Capacitor 插件定位成功:', location)
     return location
-  } catch (error) {
+  } catch (error: any) {
     console.warn('[location] Capacitor 插件定位失败:', error)
+    console.warn('[location] 错误信息:', error?.message, '代码:', error?.code)
     return null
   }
 }
 
 function isCapacitorEnv(): boolean {
-  return typeof window !== 'undefined' &&
+  return typeof window !== 'undefined' && (
     !!(window as any).Capacitor ||
     !!(window as any).cordova ||
-    document.querySelector('script[src*="capacitor"]') !== null
+    !!(window as any).__capacitor__ ||
+    document.querySelector('meta[name="capacitor"]') !== null
+  )
 }
 
 function hasCapacitorGeolocationPlugin(): boolean {
   const Capacitor = (window as any).Capacitor
-  return !!(Capacitor?.Plugins?.Geolocation)
+  return !!(Capacitor?.Plugins?.Geolocation) || !!(Capacitor?.Plugins?.CapacitorGeolocation)
 }
 
-export async function getCurrentLocationWithFallback(): Promise<ResolvedLocation | null> {
+async function requestCapacitorPermissions(): Promise<boolean> {
+  try {
+    const Capacitor = (window as any).Capacitor
+    if (!Capacitor?.Plugins?.Geolocation) {
+      console.warn('[location] Capacitor Geolocation 插件不可用')
+      return false
+    }
+
+    const Geolocation = Capacitor.Plugins.Geolocation
+    if (Geolocation.requestPermissions) {
+      const result = await Geolocation.requestPermissions()
+      console.log('[location] Capacitor 权限请求结果:', result)
+      return result?.location === 'granted' || result?.granted?.includes('location')
+    }
+    return true
+  } catch (error) {
+    console.warn('[location] Capacitor 权限请求失败:', error)
+    return false
+  }
+}
+
+async function getCapacitorLocationWithFullFallback(): Promise<ResolvedLocation | null> {
+  console.log('[location] 开始 Capacitor 定位流程...')
+
+  await requestCapacitorPermissions()
+
+  const pluginHigh = await requestCapacitorPluginLocation(true)
+  if (pluginHigh) return pluginHigh
+
+  const pluginLow = await requestCapacitorPluginLocation(false)
+  if (pluginLow) return pluginLow
+
+  console.log('[location] Capacitor 插件失败，尝试浏览器定位...')
+
+  const browserHigh = await requestBrowserLocation(true)
+  if (browserHigh) return { ...browserHigh, source: 'capacitor' }
+
+  const browserLow = await requestBrowserLocation(false)
+  if (browserLow) return { ...browserLow, source: 'capacitor' }
+
+  console.log('[location] 所有定位方式失败')
+  return null
+}
+
+export async function getCurrentLocationWithFallback(): Promise<ResolvedLocation> {
   const env = Taro.getEnv()
   const isCapacitor = isCapacitorEnv()
   const hasPlugin = hasCapacitorGeolocationPlugin()
 
   console.log('[location] 环境检测:', { env, isCapacitor, hasPlugin })
+
+  let location: ResolvedLocation | null = null
 
   if (env === 'WEAPP') {
     try {
@@ -276,42 +324,24 @@ export async function getCurrentLocationWithFallback(): Promise<ResolvedLocation
       console.warn('[location] 定位授权失败:', error)
     }
 
-    const highAccuracy = await requestWeappLocation(true)
-    if (highAccuracy) return highAccuracy
-
-    const lowAccuracy = await requestWeappLocation(false)
-    if (lowAccuracy) return lowAccuracy
-  } else if (isCapacitor && hasPlugin) {
-    const pluginHighAccuracy = await requestCapacitorPluginLocation(true)
-    if (pluginHighAccuracy) return pluginHighAccuracy
-
-    const pluginLowAccuracy = await requestCapacitorPluginLocation(false)
-    if (pluginLowAccuracy) return pluginLowAccuracy
-
-    const browserHighAccuracy = await requestBrowserLocation(true)
-    if (browserHighAccuracy) {
-      return { ...browserHighAccuracy, source: 'capacitor' }
-    }
-
-    const browserLowAccuracy = await requestBrowserLocation(false)
-    if (browserLowAccuracy) {
-      return { ...browserLowAccuracy, source: 'capacitor' }
-    }
+    location = await requestWeappLocation(true) || await requestWeappLocation(false)
+  } else if (isCapacitor) {
+    location = await getCapacitorLocationWithFullFallback()
   } else {
-    const source = isCapacitor ? 'capacitor' : 'browser'
-    const browserHighAccuracy = await requestBrowserLocation(true)
-    if (browserHighAccuracy) {
-      return { ...browserHighAccuracy, source }
-    }
-
-    const browserLowAccuracy = await requestBrowserLocation(false)
-    if (browserLowAccuracy) {
-      return { ...browserLowAccuracy, source }
+    location = await requestBrowserLocation(true) || await requestBrowserLocation(false)
+    if (location) {
+      location = { ...location, source: 'browser' }
     }
   }
 
-  const stored = getLastKnownLocation()
-  if (stored) return toResolvedLocation(stored)
+  if (location) return location
 
+  const stored = getLastKnownLocation()
+  if (stored) {
+    console.log('[location] 使用上次保存的位置:', stored)
+    return stored
+  }
+
+  console.log('[location] 使用默认位置')
   return toResolvedLocation(DEFAULT_CAMPUS_LOCATION)
 }
