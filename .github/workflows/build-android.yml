@@ -35,7 +35,6 @@ jobs:
       - name: Build H5
         working-directory: ./miniapp
         env:
-          # 从 GitHub Secrets 读取环境变量，或者使用空值
           TARO_APP_SUPABASE_URL: ${{ secrets.TARO_APP_SUPABASE_URL }}
           TARO_APP_SUPABASE_ANON_KEY: ${{ secrets.TARO_APP_SUPABASE_ANON_KEY }}
           TARO_APP_AMAP_KEY: ${{ secrets.TARO_APP_AMAP_KEY }}
@@ -64,115 +63,33 @@ jobs:
         working-directory: ./app
         run: node scripts/setup-android-permissions.js
 
-      - name: Generate and Install App Icons (Design A)
+      - name: Copy App Icons (Design A)
         working-directory: ./app
         run: |
-          # 创建图标SVG文件
-          mkdir -p assets/icons
-          cat > assets/icons/icon.svg << 'SVGEOF'
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-              <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
-                      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
-                      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
-                  </linearGradient>
-              </defs>
-              <rect width="1024" height="1024" fill="url(#grad1)" rx="180"/>
-              <g transform="translate(512, 480)">
-                  <polygon points="0,-120 200,40 0,120 -200,40" fill="#ffffff"/>
-                  <circle cx="180" cy="50" r="35" fill="#ffffff"/>
-                  <ellipse cx="0" cy="180" rx="80" ry="20" fill="#ffffff"/>
-                  <path d="M-40,180 Q0,280 40,180" stroke="#ffffff" stroke-width="16" fill="none" stroke-linecap="round"/>
-              </g>
-              <g transform="translate(680, 280)">
-                  <rect x="0" y="0" width="24" height="120" rx="12" fill="#ffffff"/>
-                  <circle cx="12" cy="-10" r="20" fill="#ffffff"/>
-              </g>
-          </svg>
-          SVGEOF
+          # 创建资源目录
+          mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-hdpi
+          mkdir -p android/app/src/main/res/mipmap-xhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
           
-          # 使用Node.js和sharp库生成PNG图标（如果可用）
-          cat > generate-icons.js << 'EOF'
-          const fs = require('fs');
-          const path = require('path');
-          
-          const sizes = [
-              { size: 48, name: 'mipmap-mdpi' },
-              { size: 72, name: 'mipmap-hdpi' },
-              { size: 96, name: 'mipmap-xhdpi' },
-              { size: 144, name: 'mipmap-xxhdpi' },
-              { size: 192, name: 'mipmap-xxxhdpi' }
-          ];
-          
-          async function generate() {
-              try {
-                  const sharp = require('sharp');
-                  const svg = fs.readFileSync('assets/icons/icon.svg');
-                  
-                  for (const s of sizes) {
-                      const outDir = path.join('android/app/src/main/res', s.name);
-                      fs.mkdirSync(outDir, { recursive: true });
-                      
-                      await sharp(svg)
-                          .resize(s.size, s.size)
-                          .png()
-                          .toFile(path.join(outDir, 'ic_launcher.png'));
-                      
-                      await sharp(svg)
-                          .resize(s.size, s.size)
-                          .png()
-                          .toFile(path.join(outDir, 'ic_launcher_round.png'));
-                      
-                      console.log(`Generated ${s.name} icon (${s.size}x${s.size})`);
-                  }
-                  console.log('✅ All icons generated successfully!');
-              } catch (e) {
-                  console.log('Sharp not available, using simple canvas approach');
-                  const { createCanvas, loadImage } = require('canvas');
-                  const svg = fs.readFileSync('assets/icons/icon.svg', 'utf8');
-                  
-                  for (const s of sizes) {
-                      const outDir = path.join('android/app/src/main/res', s.name);
-                      fs.mkdirSync(outDir, { recursive: true });
-                      
-                      const canvas = createCanvas(s.size, s.size);
-                      const ctx = canvas.getContext('2d');
-                      
-                      // 简单的渐变背景
-                      const gradient = ctx.createLinearGradient(0, 0, s.size, s.size);
-                      gradient.addColorStop(0, '#06b6d4');
-                      gradient.addColorStop(0.5, '#3b82f6');
-                      gradient.addColorStop(1, '#10b981');
-                      ctx.fillStyle = gradient;
-                      ctx.beginPath();
-                      ctx.roundRect(0, 0, s.size, s.size, s.size / 5.6);
-                      ctx.fill();
-                      
-                      const buffer = canvas.toBuffer('image/png');
-                      fs.writeFileSync(path.join(outDir, 'ic_launcher.png'), buffer);
-                      fs.writeFileSync(path.join(outDir, 'ic_launcher_round.png'), buffer);
-                      console.log(`Generated ${s.name} icon (${s.size}x${s.size})`);
-                  }
-              }
-          }
-          
-          generate().catch(err => {
-              console.log('Icon generation failed, Android will use default:', err.message);
-              // 至少创建目录结构
-              const sizes = ['mipmap-mdpi', 'mipmap-hdpi', 'mipmap-xhdpi', 'mipmap-xxhdpi', 'mipmap-xxxhdpi'];
-              for (const s of sizes) {
-                  const dir = `android/app/src/main/res/${s}`;
-                  require('fs').mkdirSync(dir, { recursive: true });
-              }
-          });
-          EOF
-          
-          # 尝试生成图标 - 如果sharp不可用，会优雅降级
-          npm install sharp canvas 2>/dev/null || true
-          node generate-icons.js 2>/dev/null || echo "Icon generation skipped, using default Android icons"
-          
-          echo "✅ Icon setup complete!"
+          # 复制我们已经生成好的PNG图标
+          if [ -d "android-icons" ]; then
+            echo "复制图标..."
+            cp android-icons/mipmap-mdpi/ic_launcher.png android/app/src/main/res/mipmap-mdpi/
+            cp android-icons/mipmap-mdpi/ic_launcher_round.png android/app/src/main/res/mipmap-mdpi/
+            cp android-icons/mipmap-hdpi/ic_launcher.png android/app/src/main/res/mipmap-hdpi/
+            cp android-icons/mipmap-hdpi/ic_launcher_round.png android/app/src/main/res/mipmap-hdpi/
+            cp android-icons/mipmap-xhdpi/ic_launcher.png android/app/src/main/res/mipmap-xhdpi/
+            cp android-icons/mipmap-xhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xhdpi/
+            cp android-icons/mipmap-xxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxhdpi/
+            cp android-icons/mipmap-xxhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xxhdpi/
+            cp android-icons/mipmap-xxxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxxhdpi/
+            cp android-icons/mipmap-xxxhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xxxhdpi/
+            echo "✅ 图标复制成功！"
+          else
+            echo "⚠️ android-icons 文件夹不存在，使用默认图标"
+          fi
 
       - name: Make gradlew executable
         working-directory: ./app/android
@@ -209,6 +126,7 @@ jobs:
             - ✅ 高德地图定位和导航（已修复定位权限！）
             - ✅ 用户认证和信用体系
             - ✅ 任务评价系统
+            - ✅ 新图标（设计A）
             
             ### 测试账号：
             - 手机号：13800138000 ~ 13800138009

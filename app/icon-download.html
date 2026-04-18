@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载 Campus Helper 图标</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .preview-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .preview-icon {
+            border-radius: 34px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .sizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .size-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+        .size-item canvas {
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .size-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        button {
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
+        }
+        .instructions {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        .instructions h3 {
+            color: #064e3b;
+            margin-bottom: 10px;
+        }
+        .instructions ol {
+            color: #065f46;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎓 下载 Campus Helper 图标</h1>
+    
+    <div class="container">
+        <div class="preview-section">
+            <svg class="preview-icon" width="200" height="200" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="1024" height="1024" fill="url(#grad1)" rx="180"/>
+                <g transform="translate(512, 480)">
+                    <polygon points="0,-120 200,40 0,120 -200,40" fill="#ffffff"/>
+                    <circle cx="180" cy="50" r="35" fill="#ffffff"/>
+                    <ellipse cx="0" cy="180" rx="80" ry="20" fill="#ffffff"/>
+                    <path d="M-40,180 Q0,280 40,180" stroke="#ffffff" stroke-width="16" fill="none" stroke-linecap="round"/>
+                </g>
+                <g transform="translate(680, 280)">
+                    <rect x="0" y="0" width="24" height="120" rx="12" fill="#ffffff"/>
+                    <circle cx="12" cy="-10" r="20" fill="#ffffff"/>
+                </g>
+            </svg>
+        </div>
+        
+        <div class="sizes-grid" id="sizesContainer"></div>
+        
+        <button id="downloadAllBtn">📥 下载所有尺寸的图标</button>
+        
+        <div class="instructions">
+            <h3>📋 使用说明</h3>
+            <ol>
+                <li>点击上方的下载按钮，会自动下载9个PNG文件</li>
+                <li>下载后，将文件保存到你知道的位置</li>
+                <li>或者直接交给我，我会帮你放到正确位置</li>
+                <li>GitHub Actions 下次构建会自动打包新图标</li>
+            </ol>
+        </div>
+        
+        <div class="success" id="successMsg">
+            ✅ 所有图标下载完成！
+        </div>
+    </div>
+
+    <script>
+        const sizes = [
+            { name: '1024x1024', size: 1024, folder: 'icon', file: 'icon.png' },
+            { name: '192x192', size: 192, folder: 'mipmap-xxxhdpi', file: 'ic_launcher.png' },
+            { name: '144x144', size: 144, folder: 'mipmap-xxhdpi', file: 'ic_launcher.png' },
+            { name: '96x96', size: 96, folder: 'mipmap-xhdpi', file: 'ic_launcher.png' },
+            { name: '72x72', size: 72, folder: 'mipmap-hdpi', file: 'ic_launcher.png' },
+            { name: '48x48', size: 48, folder: 'mipmap-mdpi', file: 'ic_launcher.png' },
+            { name: '512x512', size: 512, folder: 'icon-512', file: 'icon-512.png' },
+            { name: '256x256', size: 256, folder: 'icon-256', file: 'icon-256.png' },
+            { name: '36x36', size: 36, folder: 'mipmap-ldpi', file: 'ic_launcher.png' }
+        ];
+        
+        const svgElement = document.querySelector('svg');
+        const svgContent = new XMLSerializer().serializeToString(svgElement);
+        
+        const sizesContainer = document.getElementById('sizesContainer');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const successMsg = document.getElementById('successMsg');
+        
+        const img = new Image();
+        const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        
+        img.onload = function() {
+            sizes.forEach((s, index) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = s.size;
+                canvas.height = s.size;
+                canvas.id = 'canvas-' + s.size;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, s.size, s.size);
+                
+                const div = document.createElement('div');
+                div.className = 'size-item';
+                
+                const displayCanvas = document.createElement('canvas');
+                displayCanvas.width = 60;
+                displayCanvas.height = 60;
+                const displayCtx = displayCanvas.getContext('2d');
+                displayCtx.drawImage(img, 0, 0, 60, 60);
+                div.appendChild(displayCanvas);
+                
+                const label = document.createElement('div');
+                label.className = 'size-label';
+                label.textContent = s.name;
+                div.appendChild(label);
+                
+                sizesContainer.appendChild(div);
+            });
+            
+            downloadAllBtn.disabled = false;
+        };
+        
+        img.src = url;
+        
+        let downloaded = 0;
+        
+        function downloadCanvas(canvas, filename) {
+            return new Promise((resolve) => {
+                canvas.toBlob((blob) => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    link.click();
+                    setTimeout(resolve, 150);
+                });
+            });
+        }
+        
+        downloadAllBtn.addEventListener('click', async function() {
+            this.disabled = true;
+            this.textContent = '下载中...';
+            
+            try {
+                for (const s of sizes) {
+                    const canvas = document.getElementById('canvas-' + s.size);
+                    let filename = '';
+                    if (s.size === 1024) filename = 'icon-1024.png';
+                    else if (s.size === 512) filename = 'icon-512.png';
+                    else if (s.size === 256) filename = 'icon-256.png';
+                    else filename = `ic_launcher-${s.size}x${s.size}.png`;
+                    
+                    await downloadCanvas(canvas, filename);
+                    downloaded++;
+                    this.textContent = `下载中... ${downloaded}/${sizes.length}`;
+                }
+                
+                // 额外下载一个通用icon.png
+                const canvas1024 = document.getElementById('canvas-1024');
+                await downloadCanvas(canvas1024, 'icon.png');
+                
+                successMsg.style.display = 'block';
+            } catch (error) {
+                alert('下载完成！请把下载的PNG文件交给我处理');
+            }
+            
+            this.disabled = false;
+            this.textContent = '📥 下载所有尺寸的图标';
+        });
+    </script>
+</body>
+</html>
