@@ -1,38 +1,61 @@
 .login-page {
     min-height: 100vh;
-    background-image: url('../../static/backgrounds/login-bg.png');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    padding: 80px 32px 40px;
+    background: linear-gradient(165deg, #ecfeff 0%, #f0fdf4 35%, #fefce8 70%, #fff1f2 100%);
+    padding: 60px 28px 40px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
 
+    // 装饰性背景元素
+    &::before {
+        content: '';
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 15%;
+        left: -60px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(244, 63, 94, 0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
     .login-header {
         text-align: center;
-        margin-bottom: 48px;
+        margin-bottom: 40px;
         position: relative;
         z-index: 1;
-        animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 
         .logo {
-            font-size: 88px;
+            font-size: 80px;
             display: block;
-            margin-bottom: 20px;
-            animation: bounce 2s ease-in-out infinite;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 12px rgba(6, 182, 212, 0.2));
+            animation: float 3s ease-in-out infinite;
         }
 
         .title {
             display: block;
-            font-size: 52px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 12px;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
+            font-size: 48px;
+            font-weight: 800;
+            color: #18181b;
+            margin-bottom: 10px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #0e7490 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -40,150 +63,152 @@
 
         .subtitle {
             display: block;
-            font-size: 28px;
-            color: #64748b;
-            font-weight: 400;
+            font-size: 26px;
+            color: #71717a;
+            font-weight: 500;
+            letter-spacing: 2px;
         }
     }
 
     .login-card {
         background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
         border-radius: 32px;
-        padding: 36px 32px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.6);
+        padding: 32px 28px;
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.06),
+            0 0 0 1px rgba(255, 255, 255, 0.8),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
         position: relative;
         z-index: 1;
-        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 
         .tabs {
             display: flex;
-            margin-bottom: 36px;
-            background: #f1f5f9;
+            margin-bottom: 32px;
+            background: #f4f4f5;
             border-radius: 16px;
-            padding: 6px;
+            padding: 5px;
 
             .tab {
                 flex: 1;
                 text-align: center;
-                padding: 18px 0;
-                font-size: 30px;
-                color: #64748b;
+                padding: 16px 0;
+                font-size: 28px;
+                color: #71717a;
                 position: relative;
                 border-radius: 12px;
-                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                font-weight: 500;
+                transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+                font-weight: 600;
 
                 &.active {
                     color: #fff;
-                    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                    box-shadow: 
+                        0 4px 16px rgba(6, 182, 212, 0.35),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
                 }
             }
         }
 
         .login-mode-switch {
             display: flex;
-            margin-bottom: 28px;
-            background: #f1f5f9;
+            margin-bottom: 24px;
+            background: #f4f4f5;
             border-radius: 12px;
             padding: 4px;
 
             .mode-switch-item {
                 flex: 1;
                 text-align: center;
-                padding: 14px 0;
-                font-size: 26px;
-                color: #64748b;
+                padding: 12px 0;
+                font-size: 24px;
+                color: #71717a;
                 position: relative;
                 border-radius: 10px;
-                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                font-weight: 500;
+                transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+                font-weight: 600;
 
                 &.active {
                     color: #fff;
                     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+                    box-shadow: 0 3px 12px rgba(16, 185, 129, 0.3);
                 }
             }
         }
 
         .form {
             .form-item {
-                margin-bottom: 28px;
-                animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+                margin-bottom: 24px;
+                animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 
-                &:nth-child(1) {
-                    animation-delay: 0.15s;
-                }
-
-                &:nth-child(2) {
-                    animation-delay: 0.2s;
-                }
-
-                &:nth-child(3) {
-                    animation-delay: 0.25s;
-                }
+                &:nth-child(1) { animation-delay: 0.15s; }
+                &:nth-child(2) { animation-delay: 0.2s; }
+                &:nth-child(3) { animation-delay: 0.25s; }
+                &:nth-child(4) { animation-delay: 0.3s; }
+                &:nth-child(5) { animation-delay: 0.35s; }
 
                 .label {
                     display: block;
-                    font-size: 28px;
-                    color: #334155;
-                    margin-bottom: 14px;
+                    font-size: 26px;
+                    color: #3f3f46;
+                    margin-bottom: 12px;
                     font-weight: 600;
                 }
 
                 .input {
                     width: 100%;
-                    height: 100px;
-                    background: #f8fafc;
-                    border: 2px solid #e2e8f0;
-                    border-radius: 20px;
-                    padding: 0 24px;
-                    font-size: 30px;
-                    color: #0f172a;
+                    height: 96px;
+                    background: #fafafa;
+                    border: 2px solid #e4e4e7;
+                    border-radius: 18px;
+                    padding: 0 22px;
+                    font-size: 28px;
+                    color: #18181b;
                     box-sizing: border-box;
-                    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 
                     &:focus {
-                        border-color: #3b82f6;
+                        border-color: #06b6d4;
                         background: #fff;
-                        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+                        box-shadow: 
+                            0 0 0 4px rgba(6, 182, 212, 0.1),
+                            0 2px 8px rgba(6, 182, 212, 0.08);
                     }
 
                     &::placeholder {
-                        color: #94a3b8;
+                        color: #a1a1aa;
                     }
                 }
 
                 .code-row {
                     display: flex;
-                    gap: 16px;
+                    gap: 14px;
 
                     .code-input {
                         flex: 1;
                     }
 
                     .code-btn {
-                        width: 220px;
-                        height: 100px;
-                        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+                        width: 200px;
+                        height: 96px;
+                        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
                         color: #fff;
-                        font-size: 26px;
-                        font-weight: 600;
-                        border-radius: 20px;
+                        font-size: 24px;
+                        font-weight: 700;
+                        border-radius: 18px;
                         border: none;
                         padding: 0;
-                        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+                        transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+                        box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 
                         &:active {
-                            transform: scale(0.95);
+                            transform: scale(0.96);
                         }
 
                         &[disabled] {
-                            background: #cbd5e1;
+                            background: #d4d4d8;
                             box-shadow: none;
                         }
                     }
@@ -193,37 +218,57 @@
 
         .submit-btn {
             width: 100%;
-            height: 108px;
-            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            height: 104px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
             color: #fff;
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 700;
-            border-radius: 24px;
+            border-radius: 22px;
             border: none;
-            margin-top: 24px;
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+            margin-top: 20px;
+            box-shadow: 
+                0 8px 28px rgba(6, 182, 212, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+            position: relative;
+            overflow: hidden;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+                );
+                animation: shine 3s ease-in-out infinite;
+            }
 
             &:active {
                 transform: scale(0.98);
-                box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+                box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
             }
         }
 
         .footer-links {
             text-align: center;
-            margin-top: 28px;
+            margin-top: 24px;
             animation: fadeIn 0.5s ease-out 0.4s both;
 
             .link {
-                font-size: 28px;
-                color: #3b82f6;
-                font-weight: 500;
+                font-size: 26px;
+                color: #06b6d4;
+                font-weight: 600;
                 transition: color 0.2s ease;
 
                 &:active {
-                    color: #1d4ed8;
+                    color: #0891b2;
                 }
             }
         }
@@ -231,44 +276,46 @@
 
     .tips {
         text-align: center;
-        margin-top: 40px;
+        margin-top: 32px;
         position: relative;
         z-index: 1;
         animation: fadeIn 0.5s ease-out 0.5s both;
 
         text {
-            font-size: 26px;
-            color: #64748b;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 8px 20px;
+            font-size: 24px;
+            color: #71717a;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
             border-radius: 20px;
+            backdrop-filter: blur(8px);
         }
     }
 
     .dev-tips {
         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
         border-radius: 20px;
-        padding: 24px;
-        margin-top: 32px;
+        padding: 22px;
+        margin-top: 28px;
         text-align: center;
         position: relative;
         z-index: 1;
-        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
-        animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+        animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+        border: 1px solid rgba(245, 158, 11, 0.2);
 
         .dev-title {
             display: block;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             color: #92400e;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .dev-text {
             display: block;
-            font-size: 24px;
+            font-size: 22px;
             color: #a16207;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-family: 'SF Mono', 'Monaco', monospace;
         }
     }
@@ -277,9 +324,8 @@
 @keyframes fadeInDown {
     from {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateY(-24px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -289,9 +335,8 @@
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(24px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -299,23 +344,16 @@
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-@keyframes bounce {
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
 
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-12px);
-    }
+@keyframes shine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
 }
