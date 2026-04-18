@@ -33,22 +33,7 @@
   margin-bottom: 48px;
   opacity: 0;
   transform: scale(0.4) translateY(30px);
-  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.logo-wrapper.phase-1 {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.logo-wrapper.phase-2 {
-  transform: scale(1) translateY(0) rotate(360deg);
-  transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.logo-wrapper.phase-3 {
-  transform: scale(1) translateY(0) rotate(360deg);
-  transition: all 0.3s ease;
+  animation: logoIn 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
 }
 
 .logo-icon {
@@ -60,6 +45,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 12px 48px rgba(6, 182, 212, 0.3);
+  animation: logoRotate 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.0s forwards;
 }
 
 .logo-emoji {
@@ -69,13 +55,7 @@
 .app-name {
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-delay: 0.3s;
-}
-
-.app-name.phase-1 {
-  opacity: 1;
-  transform: translateY(0);
+  animation: fadeUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
 }
 
 .app-name-text {
@@ -91,13 +71,7 @@
   margin-top: 32px;
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-delay: 0.6s;
-}
-
-.tagline.phase-1 {
-  opacity: 1;
-  transform: translateY(0);
+  animation: fadeUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.7s forwards;
 }
 
 .tagline-text {
@@ -115,13 +89,7 @@
   justify-content: center;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-delay: 0.9s;
-}
-
-.footer.phase-1 {
-  opacity: 1;
-  transform: translateY(0);
+  animation: fadeUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.0s forwards;
 }
 
 .dots {
@@ -134,7 +102,7 @@
   height: 14px;
   border-radius: 50%;
   background: #d1d5db;
-  animation: dotBounce 1.5s ease-in-out infinite;
+  animation: dotBounce 1.2s ease-in-out infinite;
 }
 
 .dots .dot:nth-child(1) {
@@ -152,6 +120,37 @@
 .dots .dot.active {
   background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
   box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+@keyframes logoIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes logoRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes dotBounce {

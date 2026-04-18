@@ -5,24 +5,17 @@ import './index.scss'
 
 export default function Splash() {
   const [isVisible, setIsVisible] = useState(true)
-  const [animationPhase, setAnimationPhase] = useState(0)
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setAnimationPhase(1), 300)
-    const timer2 = setTimeout(() => setAnimationPhase(2), 1200)
-    const timer3 = setTimeout(() => setAnimationPhase(3), 2200)
-    const timer4 = setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsVisible(false)
       setTimeout(() => {
         Taro.switchTab({ url: '/pages/index/index' })
       }, 500)
-    }, 4000)
+    }, 3800)
 
     return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-      clearTimeout(timer3)
-      clearTimeout(timer4)
+      clearTimeout(timer)
     }
   }, [])
 
@@ -33,21 +26,21 @@ export default function Splash() {
       <View className='splash-bg' />
 
       <View className='splash-content'>
-        <View className={`logo-wrapper phase-${animationPhase}`}>
+        <View className='logo-wrapper'>
           <View className='logo-icon'>
             <Text className='logo-emoji'>🎓</Text>
           </View>
         </View>
 
-        <View className={`app-name phase-${animationPhase}`}>
+        <View className='app-name'>
           <Text className='app-name-text'>Campus Helper</Text>
         </View>
 
-        <View className={`tagline phase-${animationPhase}`}>
+        <View className='tagline'>
           <Text className='tagline-text'>让校园生活更简单</Text>
         </View>
 
-        <View className={`footer phase-${animationPhase}`}>
+        <View className='footer'>
           <View className='dots'>
             <View className='dot active' />
             <View className='dot' />
