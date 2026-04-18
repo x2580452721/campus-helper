@@ -66,7 +66,7 @@ export default function Profile() {
             title: '提示',
             content: '确定要退出登录吗？'
         })
-        
+
         if (result.confirm) {
             await supabase.auth.signOut()
             await authStore.logout()
@@ -100,6 +100,11 @@ export default function Profile() {
     if (!user || !isAuthenticated) {
         return (
             <View className='profile-container'>
+                <View className='decoration-dots'>
+                    <View className='dot'></View>
+                    <View className='dot'></View>
+                    <View className='dot'></View>
+                </View>
                 <View className='guest-section'>
                     <View className='guest-card'>
                         <View className='guest-avatar'>👤</View>
@@ -114,6 +119,11 @@ export default function Profile() {
 
     return (
         <View className='profile-container'>
+            <View className='decoration-dots'>
+                <View className='dot'></View>
+                <View className='dot'></View>
+                <View className='dot'></View>
+            </View>
             <View className='profile-header'>
                 <View className='user-info'>
                     <View className='avatar'>{(user.nickname || user.name || '同')[0]}</View>
@@ -147,14 +157,14 @@ export default function Profile() {
                     </View>
                     <View className='credit-level'>
                         <Text className='level-text'>
-                            {user.credit_score >= 90 ? '信用极好' : 
-                             user.credit_score >= 70 ? '信用良好' : 
-                             user.credit_score >= 60 ? '信用一般' : '信用较低'}
+                            {user.credit_score >= 90 ? '信用极好' :
+                                user.credit_score >= 70 ? '信用良好' :
+                                    user.credit_score >= 60 ? '信用一般' : '信用较低'}
                         </Text>
                         <Text className='level-desc'>
-                            {user.credit_score >= 90 ? '优先派单，享受更多权益' : 
-                             user.credit_score >= 70 ? '正常接单，继续保持' : 
-                             user.credit_score >= 60 ? '部分任务受限' : '请提高信用分'}
+                            {user.credit_score >= 90 ? '优先派单，享受更多权益' :
+                                user.credit_score >= 70 ? '正常接单，继续保持' :
+                                    user.credit_score >= 60 ? '部分任务受限' : '请提高信用分'}
                         </Text>
                     </View>
                 </View>
@@ -166,7 +176,7 @@ export default function Profile() {
                     <Text className='menu-text'>我的任务</Text>
                     <Text className='menu-arrow'>›</Text>
                 </View>
-                
+
                 {user.status !== 'verified' && (
                     <View className='menu-item' onClick={handleVerify}>
                         <View className='menu-icon'>🎓</View>

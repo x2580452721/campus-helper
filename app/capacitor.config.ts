@@ -4,6 +4,14 @@ const config: CapacitorConfig = {
   appId: 'com.campus.helper',
   appName: 'Campus Helper',
   webDir: 'www',
+  server: {
+    androidScheme: 'https'
+  },
+  plugins: {
+    Geolocation: {
+      // 确保 Geolocation 插件正确配置
+    }
+  },
   android: {
     allowMixedContent: true,
     captureInput: true,

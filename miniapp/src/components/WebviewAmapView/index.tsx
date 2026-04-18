@@ -69,6 +69,13 @@ export default function WebviewAmapView({
   const cacheKeyRef = useRef(`${Date.now()}`)
   const sanitizedUserLocation = useMemo(() => normalizeCoordinate(userLocation), [userLocation])
   const sanitizedTasks = useMemo(() => sanitizeTaskMarkers(tasks, '高德 WebView 任务'), [tasks])
+  const [bootUserLocation, setBootUserLocation] = useState(sanitizedUserLocation)
+
+  useEffect(() => {
+    if (!webviewLoaded) {
+      setBootUserLocation(sanitizedUserLocation)
+    }
+  }, [sanitizedUserLocation, webviewLoaded])
 
   const handleUnavailable = useCallback((reason: string) => {
     console.warn('WebView 高德地图不可用:', reason)
@@ -79,9 +86,9 @@ export default function WebviewAmapView({
   const src = useMemo(() => {
     const params = new URLSearchParams()
 
-    if (sanitizedUserLocation) {
-      params.set('lat', sanitizedUserLocation.latitude.toString())
-      params.set('lng', sanitizedUserLocation.longitude.toString())
+    if (bootUserLocation) {
+      params.set('lat', bootUserLocation.latitude.toString())
+      params.set('lng', bootUserLocation.longitude.toString())
     }
 
     if (sanitizedTasks.length > 0) {
@@ -120,7 +127,7 @@ export default function WebviewAmapView({
     }
 
     return `/static/amap-h5.html?${params.toString()}`
-  }, [compact, dockMode, env, hideTaskActions, mode, sanitizedTasks, sanitizedUserLocation, selectedTaskId, showBack, showRoute])
+  }, [bootUserLocation, compact, dockMode, env, hideTaskActions, mode, sanitizedTasks, selectedTaskId, showBack, showRoute])
 
   const handleMessage = useCallback((event: any) => {
     try {

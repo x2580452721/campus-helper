@@ -401,6 +401,11 @@ export default function Index() {
 
   return (
     <View className='index-page'>
+      <View className='decoration-dots'>
+        <View className='dot'></View>
+        <View className='dot'></View>
+        <View className='dot'></View>
+      </View>
       <View className='status-switcher'>
         {(Object.keys(statusConfig) as WorkStatus[]).map(status => (
           <View
@@ -763,13 +768,44 @@ export default function Index() {
               <Text className='back-text'>返回列表</Text>
             </View>
             <View className='map-location' onClick={() => {
-              setViewMode('list')
               setShowLocationPicker(true)
             }}>
               <Text className='location-label'>📍 {locationName} ▼</Text>
             </View>
             <Text className='map-refresh' onClick={getCurrentLocation}>🎯</Text>
           </View>
+
+          {showLocationPicker && (
+            <View className='map-location-picker'>
+              <View className='picker-header'>
+                <Text className='picker-title'>选择你的位置</Text>
+                <Text className='picker-auto' onClick={getCurrentLocation}>🎯 自动定位</Text>
+              </View>
+              <View className='picker-list'>
+                {locationsLoading ? (
+                  <View className='picker-loading'>
+                    <Text>加载中...</Text>
+                  </View>
+                ) : locations.length === 0 ? (
+                  <View className='picker-empty'>
+                    <Text>暂无地点数据</Text>
+                  </View>
+                ) : (
+                  locations.map(loc => (
+                    <View
+                      key={loc.name}
+                      className={`picker-item ${locationName === loc.name ? 'active' : ''}`}
+                      onClick={() => handleSelectLocation(loc)}
+                    >
+                      <Text className='picker-icon'>📍</Text>
+                      <Text className='picker-name'>{loc.name}</Text>
+                      {locationName === loc.name && <Text className='picker-check'>✓</Text>}
+                    </View>
+                  ))
+                )}
+              </View>
+            </View>
+          )}
 
           <View className='amap-container'>
             <AmapView

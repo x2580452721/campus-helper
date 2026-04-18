@@ -135,36 +135,49 @@ function requestWeappLocation(isHighAccuracy: boolean): Promise<ResolvedLocation
 function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocation | null> {
   return new Promise((resolve) => {
     console.log('[location] 尝试浏览器定位, 高精度:', isHighAccuracy)
-    
+
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
       console.warn('[location] 浏览器不支持 geolocation')
       resolve(null)
       return
     }
 
-    const timeout = isHighAccuracy ? 10000 : 6000
-    
+    // 手机端超时时间更长一点，让GPS有足够时间搜星
+    const timeout = isHighAccuracy ? 15000 : 10000
+
     const timeoutId = setTimeout(() => {
       console.warn('[location] 浏览器定位超时')
       resolve(null)
     }, timeout + 500)
 
+    // 优化的定位参数
+    const options = {
+      enableHighAccuracy: isHighAccuracy,
+      timeout: timeout,
+      maximumAge: isHighAccuracy ? 0 : 120000, // 缓存2分钟
+    }
+
+    console.log('[location] 使用定位参数:', options)
+
+    // 先尝试高精度定位
     navigator.geolocation.getCurrentPosition(
       (position) => {
         clearTimeout(timeoutId)
         console.log('[location] 浏览器定位成功, 原始坐标:', position.coords)
-        
+        console.log('[location] 精度:', position.coords.accuracy, '米')
+        console.log('[location] 定位来源:', position.coords)
+
         let lat = position.coords.latitude
         let lng = position.coords.longitude
-        
+
         const converted = wgs84ToGcj02(lng, lat)
         console.log('[location] 转换后坐标:', converted)
-        
+
         const location = normalizeResolvedLocation({
           latitude: converted.lat,
           longitude: converted.lng,
           name: '当前位置',
-          address: '当前位置'
+          address: `当前位置 (精度: ${position.coords.accuracy?.toFixed(0) || '~'}米)`
         }, 'browser')
         if (location) {
           saveLastKnownLocation(location)
@@ -175,13 +188,16 @@ function requestBrowserLocation(isHighAccuracy: boolean): Promise<ResolvedLocati
         clearTimeout(timeoutId)
         console.warn('[location] 浏览器定位失败:', error)
         console.warn('[location] 错误代码:', error.code, '错误信息:', error.message)
+
+        // 如果是高精度失败，尝试用低精度重试一次
+        if (isHighAccuracy && error.code !== 1) { // 代码1是用户拒绝
+          console.log('[location] 高精度失败，尝试低精度定位')
+          requestBrowserLocation(false).then(resolve)
+          return
+        }
         resolve(null)
       },
-      {
-        enableHighAccuracy: isHighAccuracy,
-        timeout: timeout,
-        maximumAge: isHighAccuracy ? 0 : 60000
-      }
+      options
     )
   })
 }
@@ -195,7 +211,7 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
     }
 
     const Geolocation = Capacitor.Plugins.Geolocation
-    
+
     const position = await Geolocation.getCurrentPosition({
       enableHighAccuracy: isHighAccuracy,
       timeout: isHighAccuracy ? 15000 : 8000,
@@ -209,20 +225,20 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
 
     let lat = position.coords.latitude
     let lng = position.coords.longitude
-    
+
     const converted = wgs84ToGcj02(lng, lat)
-    
+
     const location = normalizeResolvedLocation({
       latitude: converted.lat,
       longitude: converted.lng,
       name: '当前位置',
       address: '当前位置'
     }, 'capacitor-plugin')
-    
+
     if (location) {
       saveLastKnownLocation(location)
     }
-    
+
     console.log('[location] Capacitor 插件定位成功:', location)
     return location
   } catch (error) {
@@ -232,10 +248,10 @@ async function requestCapacitorPluginLocation(isHighAccuracy: boolean): Promise<
 }
 
 function isCapacitorEnv(): boolean {
-  return typeof window !== 'undefined' && 
-         !!(window as any).Capacitor ||
-         !!(window as any).cordova ||
-         document.querySelector('script[src*="capacitor"]') !== null
+  return typeof window !== 'undefined' &&
+    !!(window as any).Capacitor ||
+    !!(window as any).cordova ||
+    document.querySelector('script[src*="capacitor"]') !== null
 }
 
 function hasCapacitorGeolocationPlugin(): boolean {

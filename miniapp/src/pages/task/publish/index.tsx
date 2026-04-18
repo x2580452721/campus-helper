@@ -1,4 +1,4 @@
-import { View, Text, Input, Textarea, Button, Picker, Switch } from '@tarojs/components'
+import { View, Text, Input, Textarea, Button, Picker, Switch, ScrollView } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import { supabase } from '../../../utils/supabase'
@@ -237,7 +237,7 @@ export default function PublishTask() {
 
     const getLocationsByZone = () => {
         const grouped: { [key: string]: Location[] } = {}
-        
+
         zones.forEach(zone => {
             grouped[zone.name] = locations.filter(loc => loc.zone_id === zone.id)
         })
@@ -364,6 +364,11 @@ export default function PublishTask() {
 
     return (
         <View className='publish-container'>
+            <View className='decoration-dots'>
+                <View className='dot'></View>
+                <View className='dot'></View>
+                <View className='dot'></View>
+            </View>
             <View className='page-header'>
                 <View className='header-back' onClick={() => Taro.navigateBack()}>
                     <Text className='back-icon'>←</Text>
@@ -525,6 +530,35 @@ export default function PublishTask() {
                         </View>
                     )}
 
+                    <View className='map-location-selector'>
+                        <ScrollView
+                            className='location-scroll'
+                            scrollX={true}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                            <View className='location-pills'>
+                                {locations.map(loc => (
+                                    <View
+                                        key={loc.id}
+                                        className={`location-pill ${tempLocation?.id === loc.id ? 'active' : ''}`}
+                                        onClick={() => {
+                                            const normalized = normalizeCoordinate(loc);
+                                            if (normalized) {
+                                                setTempLocation({
+                                                    ...loc,
+                                                    latitude: normalized.latitude,
+                                                    longitude: normalized.longitude
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        <Text className='pill-text'>{loc.name}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </ScrollView>
+                    </View>
+
                     <View className='map-wrapper'>
                         {!isWeapp && (
                             <AmapView
@@ -558,7 +592,7 @@ export default function PublishTask() {
                                             <Text className='loc-address'>{tempLocation.address || tempLocation.name}</Text>
                                         </>
                                     ) : (
-                                        <Text className='loc-hint'>请点击地图选择任务位置</Text>
+                                        <Text className='loc-hint'>请点击地图或上方地点选择任务位置</Text>
                                     )}
                                 </View>
                             </View>
@@ -568,7 +602,7 @@ export default function PublishTask() {
                                 disabled={!tempLocation}
                                 onClick={confirmMapLocation}
                             >
-                                确认使用这个位置
+                                ✓ 确认使用这个位置
                             </Button>
                         </View>
                     ) : (
@@ -582,7 +616,7 @@ export default function PublishTask() {
                                             <Text className='loc-address'>{tempLocation.address || tempLocation.name}</Text>
                                         </>
                                     ) : (
-                                        <Text className='loc-hint'>请点击地图选择任务位置</Text>
+                                        <Text className='loc-hint'>请点击地图或上方地点选择任务位置</Text>
                                     )}
                                 </View>
                             </View>
@@ -592,7 +626,7 @@ export default function PublishTask() {
                                 disabled={!tempLocation}
                                 onClick={confirmMapLocation}
                             >
-                                确认使用这个位置
+                                ✓ 确认使用这个位置
                             </Button>
                         </View>
                     )}

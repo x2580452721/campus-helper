@@ -1,48 +1,67 @@
 /* ========================================
    校园互助平台 - 设计系统
-   Design System v3.0 - 现代极简风
+   Design System v4.0 - 炫酷奢华风 ✨
    ======================================== */
 
 /* CSS Variables - 设计令牌 */
 :root {
-    /* 主色调 - 清新蓝绿 */
-    --primary-50: #ecfeff;
-    --primary-100: #cffafe;
-    --primary-200: #a5f3fc;
-    --primary-300: #67e8f9;
-    --primary-400: #22d3ee;
-    --primary-500: #06b6d4;
-    --primary-600: #0891b2;
-    --primary-700: #0e7490;
-    --primary-800: #155e75;
-    --primary-900: #164e63;
+  /* 主色调 - 极光蓝绿渐变 */
+  --primary-50: #ecfeff;
+  --primary-100: #cffafe;
+  --primary-200: #a5f3fc;
+  --primary-300: #67e8f9;
+  --primary-400: #22d3ee;
+  --primary-500: #06b6d4;
+  --primary-600: #0891b2;
+  --primary-700: #0e7490;
+  --primary-800: #155e75;
+  --primary-900: #164e63;
 
-    /* 辅助色 - 珊瑚红 */
-    --accent-50: #fff1f2;
-    --accent-100: #ffe4e6;
-    --accent-200: #fecdd3;
-    --accent-300: #fda4af;
-    --accent-400: #fb7185;
-    --accent-500: #f43f5e;
-    --accent-600: #e11d48;
+  /* 辅助色 - 极光粉紫渐变 */
+  --accent-50: #fdf4ff;
+  --accent-100: #fae8ff;
+  --accent-200: #f5d0fe;
+  --accent-300: #f0abfc;
+  --accent-400: #e879f9;
+  --accent-500: #d946ef;
+  --accent-600: #c026d3;
 
-    /* 成功色 - 翠绿 */
-    --success-50: #ecfdf5;
-    --success-100: #d1fae5;
-    --success-500: #10b981;
-    --success-600: #059669;
+  /* 成功色 - 极光翠绿 */
+  --success-50: #ecfdf5;
+  --success-100: #d1fae5;
+  --success-200: #a7f3d0;
+  --success-500: #10b981;
+  --success-600: #059669;
 
-    /* 警告色 - 琥珀 */
-    --warning-50: #fffbeb;
-    --warning-100: #fef3c7;
-    --warning-500: #f59e0b;
-    --warning-600: #d97706;
+  /* 警告色 - 金橙渐变 */
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
 
-    /* 错误色 - 玫红 */
-    --error-50: #fef2f2;
-    --error-100: #fee2e2;
-    --error-500: #ef4444;
-    --error-600: #dc2626;
+  /* 错误色 - 珊瑚红渐变 */
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-200: #fecaca;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+
+  /* 奢华金色 */
+  --gold-50: #fffbea;
+  --gold-100: #fef3c7;
+  --gold-200: #fde68a;
+  --gold-300: #fcd34d;
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+
+  /* 紫色系 */
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
 
     /* 中性色 - 优化对比度 */
     --gray-50: #fafafa;
@@ -56,24 +75,42 @@
     --gray-800: #27272a;
     --gray-900: #18181b;
 
-    /* 渐变 - 更柔和 */
-    --gradient-primary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-    --gradient-accent: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
-    --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-    --gradient-card: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-    --gradient-hero: linear-gradient(135deg, #ecfeff 0%, #f0fdf4 50%, #fefce8 100%);
+    /* 炫酷渐变 - 极光效果 */
+  --gradient-primary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #10b981 100%);
+  --gradient-primary-shift: linear-gradient(45deg, #06b6d4, #3b82f6, #10b981, #06b6d4);
+  --gradient-accent: linear-gradient(135deg, #f43f5e 0%, #d946ef 50%, #a855f7 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+  --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%);
+  --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%);
+  --gradient-purple: linear-gradient(135deg, #a855f7 0%, #d946ef 50%, #f43f5e 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+  --gradient-hero: linear-gradient(180deg, #ecfeff 0%, #f0fdf4 30%, #fefce8 60%, #fdf4ff 100%);
+  --gradient-aurora: linear-gradient(135deg, #06b6d4, #10b981, #f59e0b, #f43f5e, #d946ef, #06b6d4);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --gradient-ocean: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #10b981 100%);
+  --gradient-sunset: linear-gradient(135deg, #f43f5e 0%, #fb7185 30%, #f59e0b 70%, #10b981 100%);
+  --gradient-cherry: linear-gradient(135deg, #dc2626 0%, #f43f5e 50%, #fb7185 100%);
+  --gradient-mint: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+  --gradient-lavender: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #d946ef 100%);
+  --gradient-cyber: linear-gradient(135deg, #06b6d4 0%, #a855f7 50%, #f43f5e 100%);
 
-    /* 阴影 - 更柔和自然 */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.04);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
-    --shadow-glow-primary: 0 8px 32px rgba(6, 182, 212, 0.25);
-    --shadow-glow-accent: 0 8px 32px rgba(244, 63, 94, 0.25);
-    --shadow-glow-success: 0 8px 32px rgba(16, 185, 129, 0.25);
-    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+    /* 炫酷阴影 - 霓虹发光效果 */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.1);
+  
+  /* 霓虹发光阴影 */
+  --shadow-glow-primary: 0 0 24px rgba(6, 182, 212, 0.4), 0 8px 32px rgba(6, 182, 212, 0.25);
+  --shadow-glow-accent: 0 0 24px rgba(217, 70, 239, 0.4), 0 8px 32px rgba(244, 63, 94, 0.25);
+  --shadow-glow-success: 0 0 24px rgba(16, 185, 129, 0.4), 0 8px 32px rgba(16, 185, 129, 0.25);
+  --shadow-glow-warning: 0 0 24px rgba(245, 158, 11, 0.4), 0 8px 32px rgba(245, 158, 11, 0.25);
+  --shadow-glow-gold: 0 0 24px rgba(245, 158, 11, 0.5), 0 8px 32px rgba(245, 158, 11, 0.3);
+  --shadow-glow-purple: 0 0 24px rgba(168, 85, 247, 0.4), 0 8px 32px rgba(168, 85, 247, 0.25);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-inner-glow: inset 0 0 20px rgba(6, 182, 212, 0.1);
 
     /* 圆角 - 更圆润 */
     --radius-xs: 6px;
@@ -577,5 +614,871 @@ page {
         opacity: 1;
         transform: translateY(0);
         max-height: 500px;
+    }
+}
+
+/* ========================================
+   炫酷动画 v4.0 ✨
+   ======================================== */
+
+/* 极光渐变动画 */
+@keyframes auroraShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.aurora-gradient {
+    background: var(--gradient-aurora);
+    background-size: 400% 400%;
+    animation: auroraShift 8s ease infinite;
+}
+
+/* 霓虹脉冲动画 */
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.4), 0 0 60px rgba(6, 182, 212, 0.2);
+    }
+}
+
+.neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* 3D 翻转效果 */
+@keyframes flipIn {
+    0% {
+        transform: perspective(400px) rotateY(90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: perspective(400px) rotateY(0);
+        opacity: 1;
+    }
+}
+
+.flip-in {
+    animation: flipIn 0.6s ease-out;
+}
+
+/* 弹跳弹性效果 */
+@keyframes bounceElastic {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.bounce-elastic {
+    animation: bounceElastic 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 旋转发光效果 */
+@keyframes rotateGlow {
+    0% {
+        transform: rotate(0deg);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+    50% {
+        transform: rotate(180deg);
+        box-shadow: 0 0 40px rgba(217, 70, 239, 0.6);
+    }
+    100% {
+        transform: rotate(360deg);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+}
+
+.rotate-glow {
+    animation: rotateGlow 3s linear infinite;
+}
+
+/* 波浪效果 */
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-8px);
+    }
+    75% {
+        transform: translateY(8px);
+    }
+}
+
+.wave {
+    animation: wave 2s ease-in-out infinite;
+}
+
+/* 粒子爆炸效果 */
+@keyframes particleBurst {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.particle-burst {
+    animation: particleBurst 0.8s ease-out forwards;
+}
+
+/* 闪烁星星效果 */
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+/* 果冻效果 */
+@keyframes jello {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1, 0.9); }
+    50% { transform: scale(0.9, 1.1); }
+    75% { transform: scale(1.05, 0.95); }
+}
+
+.jello {
+    animation: jello 0.8s ease-in-out;
+}
+
+/* 心跳加速 */
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10% { transform: scale(1.1); }
+    20% { transform: scale(1); }
+    30% { transform: scale(1.15); }
+    40% { transform: scale(1); }
+}
+
+.heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* 彩虹文字 */
+@keyframes rainbowText {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.rainbow-text {
+    background: linear-gradient(90deg, #06b6d4, #10b981, #f59e0b, #f43f5e, #a855f7, #06b6d4);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbowText 4s linear infinite;
+}
+
+/* 玻璃态毛玻璃增强 */
+.glass-enhanced {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* 磁悬浮效果 */
+.levitate {
+    animation: levitate 3s ease-in-out infinite;
+}
+
+@keyframes levitate {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* 炫酷按钮效果 */
+.btn-futuristic {
+    position: relative;
+    overflow: hidden;
+    background: var(--gradient-primary);
+    transition: all 0.3s ease;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+        );
+        transform: rotate(45deg);
+        animation: btnShine 3s ease-in-out infinite;
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes btnShine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* 水波纹点击效果 */
+.ripple {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+/* 炫酷卡片悬浮 */
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    &:active {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: var(--shadow-glow-primary);
+    }
+}
+
+/* 数字滚动效果 */
+.number-roll {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.number-roll:active {
+    transform: scale(1.2) rotate(-5deg);
+}
+
+/* 标签炫酷效果 */
+.tag-glow {
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        animation: tagShine 2s ease-in-out infinite;
+    }
+}
+
+@keyframes tagShine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+}
+
+/* 输入框聚焦发光 */
+.input-glow {
+    transition: all 0.3s ease;
+    
+    &:focus-within {
+        box-shadow: var(--shadow-glow-primary);
+        border-color: var(--primary-500);
+    }
+}
+
+/* 炫酷分割线 */
+.divider-glow {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-400), var(--primary-500), var(--primary-400), transparent);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+/* 加载动画增强 */
+.spinner-enhanced {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid transparent;
+    }
+    
+    &::before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top-color: var(--primary-500);
+        border-right-color: var(--primary-500);
+        animation: spinnerRotate 1s linear infinite;
+    }
+    
+    &::after {
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        border-bottom-color: var(--accent-500);
+        border-left-color: var(--accent-500);
+        animation: spinnerRotate 0.8s linear infinite reverse;
+    }
+}
+
+@keyframes spinnerRotate {
+    to { transform: rotate(360deg); }
+}
+
+/* 进度条炫酷效果 */
+.progress-glow {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        animation: progressShine 2s ease-in-out infinite;
+    }
+}
+
+@keyframes progressShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ========================================
+   新增：更多炫酷动画 v4.1 ✨
+   ======================================== */
+
+/* 火焰燃烧效果 */
+@keyframes flame {
+    0%, 100% { transform: scaleY(1) scaleX(1); }
+    25% { transform: scaleY(1.1) scaleX(0.9); }
+    50% { transform: scaleY(0.9) scaleX(1.1); }
+    75% { transform: scaleY(1.05) scaleX(0.95); }
+}
+
+.flame {
+    animation: flame 0.6s ease-in-out infinite;
+}
+
+/* 蒸汽朋克齿轮旋转 */
+@keyframes gearSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.gear-spin {
+    animation: gearSpin 4s linear infinite;
+}
+
+/* 赛博朋克扫描线 */
+@keyframes cyberScan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+.cyber-scan {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
+        animation: cyberScan 2s linear infinite;
+    }
+}
+
+/* 能量条波动 */
+@keyframes energyWave {
+    0%, 100% { transform: scaleX(1); opacity: 1; }
+    50% { transform: scaleX(1.05); opacity: 0.8; }
+}
+
+.energy-wave {
+    animation: energyWave 1.5s ease-in-out infinite;
+}
+
+/* 星尘飘落 */
+@keyframes starDust {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.star-dust {
+    animation: starDust 3s ease-in infinite;
+}
+
+/* 声波波纹 */
+@keyframes soundWave {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.sound-wave {
+    animation: soundWave 1.5s ease-out infinite;
+}
+
+/* 魔方旋转 */
+@keyframes cubeRotate {
+    0% { transform: rotateX(0deg) rotateY(0deg); }
+    25% { transform: rotateX(90deg) rotateY(90deg); }
+    50% { transform: rotateX(180deg) rotateY(180deg); }
+    75% { transform: rotateX(270deg) rotateY(270deg); }
+    100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+.cube-rotate {
+    animation: cubeRotate 8s linear infinite;
+}
+
+/* 螺旋上升 */
+@keyframes spiralUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.spiral-up {
+    animation: spiralUp 2s ease-in infinite;
+}
+
+/* 像素化出现 */
+@keyframes pixelate {
+    0% {
+        filter: blur(10px);
+        opacity: 0;
+    }
+    50% {
+        filter: blur(5px);
+    }
+    100% {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+.pixelate {
+    animation: pixelate 0.5s ease-out;
+}
+
+/* 闪电闪烁 */
+@keyframes lightning {
+    0%, 100% { opacity: 1; }
+    10%, 30%, 50%, 70%, 90% { opacity: 0.3; }
+    20%, 40%, 60%, 80% { opacity: 1; }
+}
+
+.lightning {
+    animation: lightning 1s ease-in-out infinite;
+}
+
+/* 水晶折射 */
+@keyframes crystalGlow {
+    0%, 100% {
+        filter: brightness(1);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+    50% {
+        filter: brightness(1.3);
+        box-shadow: 0 0 40px rgba(6, 182, 212, 0.6);
+    }
+}
+
+.crystal-glow {
+    animation: crystalGlow 2s ease-in-out infinite;
+}
+
+/* 赛博朋克 glitch 效果 */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.glitch {
+    animation: glitch 0.3s ease-in-out infinite;
+}
+
+/* 极光粒子 */
+@keyframes auroraParticle {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) translateX(20px);
+        opacity: 0;
+    }
+}
+
+.aurora-particle {
+    animation: auroraParticle 3s ease-in-out infinite;
+}
+
+/* 量子隧穿 */
+@keyframes quantumTunnel {
+    0%, 100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(20px);
+        opacity: 0.5;
+    }
+}
+
+.quantum-tunnel {
+    animation: quantumTunnel 2s ease-in-out infinite;
+}
+
+/* 霓虹灯闪烁 */
+@keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.4; }
+    94% { opacity: 1; }
+    95% { opacity: 0.6; }
+    96% { opacity: 1; }
+}
+
+.neon-flicker {
+    animation: neonFlicker 4s linear infinite;
+}
+
+/* 能量爆发 */
+@keyframes energyBurst {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.energy-burst {
+    animation: energyBurst 0.8s ease-out;
+}
+
+/* 赛博朋克网格 */
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+.grid-move {
+    background-image: 
+        linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 3s linear infinite;
+}
+
+/* 全息投影效果 */
+@keyframes hologram {
+    0%, 100% {
+        opacity: 0.9;
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        filter: hue-rotate(30deg);
+    }
+}
+
+.hologram {
+    animation: hologram 3s ease-in-out infinite;
+    background: linear-gradient(180deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+}
+
+/* 彗星轨迹 */
+@keyframes cometTrail {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.comet-trail {
+    animation: cometTrail 2s ease-in-out infinite;
+}
+
+/* 时间扭曲 */
+@keyframes timeWarp {
+    0% {
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+        filter: blur(2px);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+    }
+}
+
+.time-warp {
+    animation: timeWarp 4s ease-in-out infinite;
+}
+
+/* 超新星爆发 */
+@keyframes supernova {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    10% {
+        transform: scale(0.2);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.supernova {
+    animation: supernova 2s ease-out;
+}
+
+/* 炫酷工具类集合 */
+.animate-aurora {
+    animation: auroraShift 8s ease infinite;
+}
+
+.animate-flame {
+    animation: flame 0.6s ease-in-out infinite;
+}
+
+.animate-gears {
+    animation: gearSpin 4s linear infinite;
+}
+
+.animate-cyber-scan {
+    position: relative;
+    overflow: hidden;
+}
+
+.animate-cyber-scan::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
+    animation: cyberScan 2s linear infinite;
+}
+
+.animate-energy {
+    animation: energyWave 1.5s ease-in-out infinite;
+}
+
+.animate-crystal {
+    animation: crystalGlow 2s ease-in-out infinite;
+}
+
+.animate-glitch {
+    animation: glitch 0.3s ease-in-out infinite;
+}
+
+.animate-hologram {
+    animation: hologram 3s ease-in-out infinite;
+}
+
+/* 组合动画：炫酷入场 */
+.animate-epic-enter {
+    animation: flipIn 0.6s ease-out, shadowPulse 2s ease-in-out infinite 0.6s;
+}
+
+/* 组合动画：炫酷悬停 */
+.animate-epic-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animate-epic-hover:active {
+    transform: translateY(-4px) scale(1.02);
+    animation: neonPulse 0.5s ease-in-out;
+}
+
+/* 终极炫酷按钮 */
+.btn-ultimate {
+    position: relative;
+    overflow: hidden;
+    background: var(--gradient-aurora);
+    background-size: 400% 400%;
+    animation: auroraShift 4s ease infinite;
+    box-shadow: var(--shadow-glow-primary);
+    transition: all 0.3s ease;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        transform: rotate(45deg);
+        animation: btnShine 2s ease-in-out infinite;
+    }
+    
+    &:active {
+        transform: scale(0.95);
+        box-shadow: var(--shadow-glow-accent);
+    }
+}
+
+/* 终极炫酷卡片 */
+.card-ultimate {
+    position: relative;
+    background: var(--gradient-card);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: var(--gradient-aurora);
+        background-size: 400% 400%;
+        animation: auroraShift 6s ease infinite;
+        border-radius: calc(var(--radius-2xl) + 2px);
+        z-index: -1;
+        opacity: 0.6;
+    }
+    
+    &:active {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: var(--shadow-2xl), var(--shadow-glow-primary);
+    }
+}
+
+/* 终极炫酷标签 */
+.tag-ultimate {
+    position: relative;
+    overflow: hidden;
+    background: var(--gradient-primary);
+    color: #fff;
+    box-shadow: var(--shadow-glow-primary);
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        animation: tagShine 2s ease-in-out infinite;
     }
 }

@@ -119,8 +119,52 @@ export default function AmapView({
   }, [])
 
   useEffect(() => {
-    setCurrentUserLocation(initialLocation)
-  }, [initialLocation])
+    if (initialLocation && mapInstanceRef.current && !loading) {
+      console.log('AmapView 更新位置:', initialLocation)
+      setCurrentUserLocation(initialLocation)
+
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.setCenter([initialLocation.longitude, initialLocation.latitude])
+      }
+
+      if (mode === 'select') {
+        if (selectMarkerRef.current) {
+          selectMarkerRef.current.setPosition([initialLocation.longitude, initialLocation.latitude])
+        } else if (window.AMap) {
+          const selectMarker = new window.AMap.Marker({
+            position: [initialLocation.longitude, initialLocation.latitude],
+            content: `
+              <div style="
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                border-radius: 50%;
+                border: 3px solid white;
+                box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <div style="
+                  width: 12px;
+                  height: 12px;
+                  background: white;
+                  border-radius: 50%;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                "></div>
+              </div>
+            `,
+            offset: new window.AMap.Pixel(-16, -16),
+            zIndex: 10000
+          })
+          selectMarker.setMap(mapInstanceRef.current)
+          selectMarkerRef.current = selectMarker
+        }
+      }
+    } else {
+      setCurrentUserLocation(initialLocation)
+    }
+  }, [initialLocation, loading, mode])
 
   useEffect(() => {
     if (mapInstanceRef.current && !loading) {

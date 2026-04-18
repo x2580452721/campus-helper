@@ -553,6 +553,11 @@ export default function TaskDetail() {
 
   return (
     <View className='detail-container'>
+      <View className='decoration-dots'>
+        <View className='dot'></View>
+        <View className='dot'></View>
+        <View className='dot'></View>
+      </View>
       <View className='page-back-pill' onClick={() => Taro.navigateBack()}>
         <Text className='page-back-arrow'>←</Text>
         <Text className='page-back-text'>返回列表</Text>

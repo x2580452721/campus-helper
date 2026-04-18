@@ -60,6 +60,10 @@ jobs:
           npx cap add android || true
           npx cap sync
 
+      - name: Setup Android Location Permissions
+        working-directory: ./app
+        run: node scripts/setup-android-permissions.js
+
       - name: Make gradlew executable
         working-directory: ./app/android
         run: chmod +x gradlew
@@ -92,7 +96,7 @@ jobs:
             
             ### 功能特性：
             - ✅ 校园互助任务发布和接单
-            - ✅ 高德地图定位和导航
+            - ✅ 高德地图定位和导航（已修复定位权限！）
             - ✅ 用户认证和信用体系
             - ✅ 任务评价系统
             
@@ -104,6 +108,7 @@ jobs:
             - 这是 Debug 版本，仅供测试使用
             - 需要网络连接才能使用
             - 部分功能可能需要 VPN（Supabase 在国外）
+            - 📍 定位已修复！首次打开请授予位置权限
           draft: false
           prerelease: false
         env:

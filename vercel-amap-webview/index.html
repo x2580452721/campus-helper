@@ -1733,7 +1733,11 @@
 
             if (showBackParam === '1') {
                 bindTap(document.getElementById('dockBackBtn'), () => {
-                    triggerBackToList()
+                    if (mode === 'select') {
+                        sendMessage({ type: 'back' })
+                    } else {
+                        triggerBackToList()
+                    }
                 })
             }
 
@@ -2200,7 +2204,11 @@
             const backBtn = document.getElementById('selectBackBtn')
             if (backBtn) {
                 bindTap(backBtn, () => {
-                    triggerBackToList()
+                    if (mode === 'select') {
+                        sendMessage({ type: 'back' })
+                    } else {
+                        triggerBackToList()
+                    }
                 })
             }
 
