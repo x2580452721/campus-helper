@@ -1,3 +1,12 @@
+---
+## 📌 [给 AI 助手的提示](.trae-ai-prompt.md) - **请先看这里！**
+
+### 文档位置与工作流程
+1. **只修改 `docs/` 目录下的文档！**
+2. 修改后运行：`python sync_docs_simple.py` 同步到 `.trae/documents/`
+3. 详细说明见：[文档同步指南](docs/01-项目管理/DOCS_SYNC_GUIDE.md)
+
+---
 # Campus Helper - 校园互助平台
 
 基于 **Taro (MiniApp)** + **React (Admin)** + **Supabase** 的全栈校园互助解决方案。
