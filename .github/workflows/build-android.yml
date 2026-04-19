@@ -66,17 +66,7 @@ jobs:
 
       - name: Apply App Icons
         working-directory: ./app
-        run: |
-          # Copy app icons from android-icons to Android res folder
-          if [ -d "android-icons" ]; then
-            for folder in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
-              if [ -d "android-icons/$folder" ]; then
-                mkdir -p "android/app/src/main/res/$folder"
-                cp -f android-icons/$folder/*.png android/app/src/main/res/$folder/ 2>/dev/null || true
-              fi
-            done
-            echo "✅ App icons applied successfully!"
-          fi
+        run: node scripts/apply-icons.js
 
       - name: Make gradlew executable
         working-directory: ./app/android
