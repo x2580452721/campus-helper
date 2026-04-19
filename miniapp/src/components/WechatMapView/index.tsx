@@ -318,10 +318,10 @@ export default function WechatMapView({
         height: isSelected ? 60 : 50,
         zIndex: isSelected ? 1000 : 10,
         callout: {
-          content: ¥,
+          content: `¥${marker.reward || 0}`,
           color: '#ffffff',
-          fontSize: isSelected ? 16 : 14,
-          borderRadius: isSelected ? 20 : 16,
+          fontSize: isSelected ? '16px' : '14px',
+          borderRadius: isSelected ? '20px' : '16px',
           bgColor: isUrgent ? '#dc2626' : '#3b82f6',
           padding: isSelected ? '8px 16px' : '6px 12px',
           display: 'ALWAYS',
