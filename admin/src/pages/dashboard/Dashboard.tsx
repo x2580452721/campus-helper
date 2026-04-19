@@ -61,7 +61,9 @@ export default function Dashboard() {
 
       for (let i = 0; i < tasks.length; i++) {
         const t = tasks[i]
-        totalRewards += t.reward || 0
+        // 确保正确转换 reward 为数字
+        const reward = parseFloat(t.reward) || 0
+        totalRewards += reward
         switch (t.status) {
           case 'completed': completedCount++; break
           case 'published': pendingCount++; break
@@ -284,7 +286,7 @@ export default function Dashboard() {
       title: '酬金',
       dataIndex: 'reward',
       key: 'reward',
-      render: (reward: number) => <span style={{ color: '#faad14', fontWeight: 600 }}>¥{reward}</span>
+      render: (reward: any) => <span style={{ color: '#faad14', fontWeight: 600 }}>¥{parseFloat(reward) || 0}</span>
     },
     {
       title: '状态',
