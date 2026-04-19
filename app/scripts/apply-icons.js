@@ -31,7 +31,28 @@ const mipmapFolders = [
 ];
 
 let copied = 0;
+let deleted = 0;
 
+// 删除自适应图标相关的文件
+const adaptiveIconPaths = [
+  path.join(resDir, 'mipmap-anydpi-v26'),
+  path.join(resDir, 'values', 'ic_launcher_background.xml')
+];
+
+adaptiveIconPaths.forEach(adaptivePath => {
+  if (fs.existsSync(adaptivePath)) {
+    if (fs.statSync(adaptivePath).isDirectory()) {
+      fs.rmSync(adaptivePath, { recursive: true, force: true });
+      console.log(`🗑️ 删除自适应图标文件夹: ${path.basename(adaptivePath)}`);
+    } else {
+      fs.unlinkSync(adaptivePath);
+      console.log(`🗑️ 删除自适应图标文件: ${path.basename(adaptivePath)}`);
+    }
+    deleted++;
+  }
+});
+
+// 复制我们的PNG图标
 mipmapFolders.forEach(folder => {
   const sourceFolder = path.join(androidIconsDir, folder);
   const targetFolder = path.join(resDir, folder);
@@ -55,6 +76,9 @@ mipmapFolders.forEach(folder => {
 });
 
 console.log(`\n🎉 成功应用 ${copied} 个图标文件！`);
+if (deleted > 0) {
+  console.log(`🗑️ 删除了 ${deleted} 个自适应图标相关文件/文件夹`);
+}
 console.log('\n📱 下一步:');
 console.log('   1. 运行: npx cap open android');
 console.log('   2. 在Android Studio中构建并运行应用');
