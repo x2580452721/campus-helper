@@ -35,6 +35,7 @@ jobs:
       - name: Build H5
         working-directory: ./miniapp
         env:
+          # 从 GitHub Secrets 读取环境变量，或者使用空值
           TARO_APP_SUPABASE_URL: ${{ secrets.TARO_APP_SUPABASE_URL }}
           TARO_APP_SUPABASE_ANON_KEY: ${{ secrets.TARO_APP_SUPABASE_ANON_KEY }}
           TARO_APP_AMAP_KEY: ${{ secrets.TARO_APP_AMAP_KEY }}
@@ -63,32 +64,18 @@ jobs:
         working-directory: ./app
         run: node scripts/setup-android-permissions.js
 
-      - name: Copy App Icons (Design A)
+      - name: Apply App Icons
         working-directory: ./app
         run: |
-          # 创建资源目录
-          mkdir -p android/app/src/main/res/mipmap-mdpi
-          mkdir -p android/app/src/main/res/mipmap-hdpi
-          mkdir -p android/app/src/main/res/mipmap-xhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-          
-          # 复制我们已经生成好的PNG图标
+          # Copy app icons from android-icons to Android res folder
           if [ -d "android-icons" ]; then
-            echo "复制图标..."
-            cp android-icons/mipmap-mdpi/ic_launcher.png android/app/src/main/res/mipmap-mdpi/
-            cp android-icons/mipmap-mdpi/ic_launcher_round.png android/app/src/main/res/mipmap-mdpi/
-            cp android-icons/mipmap-hdpi/ic_launcher.png android/app/src/main/res/mipmap-hdpi/
-            cp android-icons/mipmap-hdpi/ic_launcher_round.png android/app/src/main/res/mipmap-hdpi/
-            cp android-icons/mipmap-xhdpi/ic_launcher.png android/app/src/main/res/mipmap-xhdpi/
-            cp android-icons/mipmap-xhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xhdpi/
-            cp android-icons/mipmap-xxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxhdpi/
-            cp android-icons/mipmap-xxhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xxhdpi/
-            cp android-icons/mipmap-xxxhdpi/ic_launcher.png android/app/src/main/res/mipmap-xxxhdpi/
-            cp android-icons/mipmap-xxxhdpi/ic_launcher_round.png android/app/src/main/res/mipmap-xxxhdpi/
-            echo "✅ 图标复制成功！"
-          else
-            echo "⚠️ android-icons 文件夹不存在，使用默认图标"
+            for folder in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+              if [ -d "android-icons/$folder" ]; then
+                mkdir -p "android/app/src/main/res/$folder"
+                cp -f android-icons/$folder/*.png android/app/src/main/res/$folder/ 2>/dev/null || true
+              fi
+            done
+            echo "✅ App icons applied successfully!"
           fi
 
       - name: Make gradlew executable
@@ -126,7 +113,6 @@ jobs:
             - ✅ 高德地图定位和导航（已修复定位权限！）
             - ✅ 用户认证和信用体系
             - ✅ 任务评价系统
-            - ✅ 新图标（设计A）
             
             ### 测试账号：
             - 手机号：13800138000 ~ 13800138009
