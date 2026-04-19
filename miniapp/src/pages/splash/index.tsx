@@ -40,13 +40,7 @@ export default function Splash() {
           <Text className='tagline-text'>让校园生活更简单</Text>
         </View>
 
-        <View className='footer'>
-          <View className='dots'>
-            <View className='dot' />
-            <View className='dot' />
-            <View className='dot' />
-          </View>
-        </View>
+
       </View>
     </View>
   )
