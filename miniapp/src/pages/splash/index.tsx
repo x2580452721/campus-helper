@@ -1,46 +1,38 @@
 import { View, Text } from '@tarojs/components'
-import { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
+import { useEffect } from 'react'
 import './index.scss'
 
 export default function Splash() {
-  const [isVisible, setIsVisible] = useState(true)
-
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false)
-      setTimeout(() => {
-        Taro.switchTab({ url: '/pages/index/index' })
-      }, 500)
+      Taro.redirectTo({ url: '/pages/index/index' })
     }, 3800)
-
-    return () => {
-      clearTimeout(timer)
-    }
+    return () => clearTimeout(timer)
   }, [])
 
-  if (!isVisible) return null
-
   return (
-    <View className='splash-container'>
-      <View className='splash-bg' />
-
+    <View className='splash-page'>
+      <View className='decoration-orbs'>
+        <View className='orb orb-1' />
+        <View className='orb orb-2' />
+        <View className='orb orb-3' />
+      </View>
+      
       <View className='splash-content'>
-        <View className='logo-wrapper'>
-          <View className='logo-icon'>
-            <Text className='logo-emoji'>🎓</Text>
-          </View>
+        <View className='logo-container'>
+          <View className='logo-ring ring-outer' />
+          <View className='logo-ring ring-inner' />
+          <View className='logo-icon'>🎓</View>
         </View>
-
-        <View className='app-name'>
-          <Text className='app-name-text'>Campus Helper</Text>
+        
+        <View className='title-container'>
+          <Text className='app-title'>Campus Helper</Text>
         </View>
-
-        <View className='tagline'>
-          <Text className='tagline-text'>让校园生活更简单</Text>
+        
+        <View className='subtitle-container'>
+          <Text className='app-subtitle'>校园生活好帮手</Text>
         </View>
-
-
       </View>
     </View>
   )
