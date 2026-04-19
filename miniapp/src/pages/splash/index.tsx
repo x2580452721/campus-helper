@@ -42,7 +42,7 @@ export default function Splash() {
 
         <View className='footer'>
           <View className='dots'>
-            <View className='dot active' />
+            <View className='dot' />
             <View className='dot' />
             <View className='dot' />
           </View>
