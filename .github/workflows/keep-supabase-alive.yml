@@ -1,0 +1,72 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    - cron: "0 8 */3 * *" # 每3天运行一次，UTC时间早上8点
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    name: Ping Supabase to prevent project pause
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Error: SUPABASE_URL or SUPABASE_ANON_KEY not configured in repository secrets"
+            exit 1
+          fi
+          
+          echo "Pinging Supabase at: $SUPABASE_URL"
+          
+          # 1. 简单的健康检查请求
+          echo "Step 1: Health check..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/")
+          
+          echo "Health check response: $HTTP_CODE"
+          
+          # 2. 尝试插入一个 ping 记录（会创建真实的数据库活动）
+          echo "Step 2: Insert ping record..."
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          PING_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{\"created_at\":\"$TIMESTAMP\",\"source\":\"github_actions\"}" \
+            "$SUPABASE_URL/rest/v1/pings")
+          
+          PING_HTTP_CODE=$(echo "$PING_RESPONSE" | tail -n1)
+          PING_BODY=$(echo "$PING_RESPONSE" | head -n -1)
+          
+          echo "Ping insert response: $PING_HTTP_CODE"
+          if [ "$PING_HTTP_CODE" != "201" ] && [ "$PING_HTTP_CODE" != "200" ]; then
+            echo "Warning: Ping insert failed, but health check passed. Project should still be active."
+            echo "Response: $PING_BODY"
+          fi
+          
+          # 3. 清理旧的 ping 记录（只保留最近30天的）
+          echo "Step 3: Cleanup old records..."
+          THIRTY_DAYS_AGO=$(date -u -d "30 days ago" +"%Y-%m-%dT%H:%M:%SZ")
+          
+          CLEANUP_RESPONSE=$(curl -s -w "\n%{http_code}" -X DELETE \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            "$SUPABASE_URL/rest/v1/pings?created_at=lt.$THIRTY_DAYS_AGO")
+          
+          CLEANUP_HTTP_CODE=$(echo "$CLEANUP_RESPONSE" | tail -n1)
+          echo "Cleanup response: $CLEANUP_HTTP_CODE"
+          
+          echo "✅ Supabase keep-alive completed successfully!"
